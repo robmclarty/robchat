@@ -20,5 +20,42 @@
   "bugs": {
     "url": "https://github.com/robmclarty/rebelchat/issues"
   },
-  "homepage": "https://github.com/robmclarty/rebelchat#readme"
+  "homepage": "https://github.com/robmclarty/rebelchat#readme",
+  "dependencies": {
+    "body-parser": "1.15.2",
+    "express": "4.14.0",
+    "morgan": "1.7.0",
+    "redis": "2.6.2",
+    "socket.io": "1.4.8"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-object-rest-spread": "6.8.0",
+    "babel-preset-es2015": "6.9.0",
+    "babel-preset-react": "6.11.1",
+    "babelify": "7.3.0",
+    "browserify": "13.0.1",
+    "del": "2.2.1",
+    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-autoprefixer": "3.1.0",
+    "gulp-concat": "2.6.0",
+    "gulp-cssnano": "2.1.2",
+    "gulp-if": "2.0.1",
+    "gulp-rev": "7.1.0",
+    "gulp-rev-replace": "0.4.3",
+    "gulp-rsync": "0.0.6",
+    "gulp-sass": "2.3.2",
+    "gulp-sourcemaps": "1.6.0",
+    "gulp-uglify": "1.5.4",
+    "moment": "2.14.1",
+    "react": "15.2.0",
+    "react-dom": "15.2.0",
+    "react-redux": "4.4.5",
+    "react-scroll": "1.0.20",
+    "redux": "3.5.2",
+    "require-dir": "0.3.0",
+    "socket.io-client": "1.4.8",
+    "vinyl-buffer": "1.0.0",
+    "vinyl-source-stream": "1.1.0",
+    "yargs": "4.7.1"
+  }
 }
