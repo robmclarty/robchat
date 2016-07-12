@@ -61,7 +61,7 @@ gulp.task('build:app', function () {
   return stream.bundle()
     .pipe(source('application.js'))
     .pipe(buffer())
-    .pipe(gulpif(!isProduction, sourcemaps.init({ loadMaps: true })))
+    .pipe(gulpif(!isProduction, sourcemaps.init({ loadMaps: true, debug: true })))
       .pipe(gulpif(isProduction, uglify()))
     .pipe(gulpif(!isProduction, sourcemaps.write('.')))
     .pipe(gulp.dest('./build/javascripts'))

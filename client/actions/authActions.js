@@ -1,0 +1,144 @@
+import { push } from 'react-router-redux';
+import config from '../../config/client';
+import {
+  REGISTER_PENDING,
+  REGISTER_SUCCESS,
+  REGISTER_FAIL,
+  LOGIN_PENDING,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
+  LOGOUT_PENDING,
+  LOGOUT_SUCCESS,
+  LOGOUT_FAIL
+} from '../constants/ActionTypes';
+import { STATUS_PENDING } from '../constants/FlashMessageTypes';
+import {
+  updateLocalTokens,
+  removeLocalTokens,
+  freshTokens,
+  decodedPayload
+} from '../middleware/jwt-api';
+import {
+  showFlashMessages,
+  hideFlashMessages
+} from './';
+
+const tokensUrl = `${ config.authRoot }/tokens`;
+
+const startup = dispatch => {
+  return Promise.resolve()
+    .then(dispatch(showFlashMessages({ status: STATUS_PENDING, messages: ['Loading resources...'] })))
+    // .then(dispatch(fetchMessages()))
+    // .then(dispatch(fetchUsers()))
+    .then(dispatch(hideFlashMessages()));
+};
+
+
+// Register
+// --------
+export const register = creds => (dispatch, callApi) => {
+}
+
+export const registerPending = () => ({
+  type: REGISTER_PENDING
+})
+
+export const registerSuccess = () => ({
+  type: registerSuccess,
+  receivedAt: Date.now()
+})
+
+export const registerFail = err => ({
+  type: REGISTER_FAIL,
+  message: err,
+  receivedAt: Date.now()
+})
+
+
+// Login
+// -----
+
+// Post login credentials to server and receive JSON Web Tokens for
+// authorization with API. Redirect to map screen after successful manual login.
+//
+// `creds` is an object containing a user's login credentials:
+// {
+//   username: 'johndoe',
+//   password: 'my-s3cret_Password'
+// }
+export const login = creds => (dispatch, callApi) => {
+  dispatch(loginPending());
+
+  return callApi({ url: tokensUrl, method: 'POST', body: creds, requireAuth: false })
+    .then(res => res.tokens)
+    .then(updateLocalTokens)
+    .then(tokens => dispatch(loginSuccess(tokens)))
+    .catch(err => dispatch(loginFail(err)))
+    .then(startup(dispatch));
+};
+
+// TODO: Might want to handle auto-login failure differently than regular
+// failure so that there isn't an actual error message displayed necessarily.
+export const autoLogin = () => (dispatch, callApi, getState) => {
+  dispatch(loginPending());
+
+  return freshTokens(getState())
+    .then(updateLocalTokens)
+    .then(tokens => dispatch(loginSuccess(tokens)))
+    .catch(err => dispatch(loginFail(err)))
+    .then(startup(dispatch));
+};
+
+const loginPending = () => ({
+  type: LOGIN_PENDING
+});
+
+const mapFail = err => {
+  console.log('Error loading map: ', err);
+};
+
+const loginSuccess = tokens => {
+  const { accessToken, refreshToken } = tokens;
+
+  return {
+    type: LOGIN_SUCCESS,
+    accessToken,
+    refreshToken,
+    tokenPayload: decodedPayload(accessToken),
+    receivedAt: Date.now()
+  };
+};
+
+const loginFail = err => ({
+  type: LOGIN_FAIL,
+  message: err,
+  receivedAt: Date.now()
+});
+
+
+// Logout
+// ------
+export const logout = () => (dispatch, callApi) => {
+  dispatch(logoutPending());
+
+  return callApi({ url: tokensUrl, method: 'DELETE', useRefreshToken: true })
+    .then(removeLocalTokens)
+    .then(dispatch(logoutSuccess()))
+    .then(dispatch(push('/rebelchat')))
+    .catch(err => dispatch(logoutFail(err)));
+};
+
+const logoutPending = () => ({
+  type: LOGOUT_PENDING
+});
+
+const logoutSuccess = () => ({
+  type: LOGOUT_SUCCESS,
+  receivedAt: Date.now()
+});
+
+const logoutFail = err => ({
+  type: LOGOUT_FAIL,
+  message: err,
+  receivedAt: Date.now()
+});

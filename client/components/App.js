@@ -1,60 +1,27 @@
-import React, { PropTypes } from 'react'
-import io from 'socket.io-client'
+import React, { PropTypes } from 'react';
+import Header from '../containers/HeaderContainer';
+import FlashMessenger from '../containers/FlashMessengerContainer';
 
-const socket = io()
+const currentYear = new Date().getFullYear();
 
-const App = React.createClass({
-  displayName: 'App',
+const App = ({ isAuthenticated, currentPath, children }) => (
+  <div className="app-container rebelchat">
+    <Header currentPath={currentPath} />
 
-  getInitialState: function () {
-    return {
-      messages: []
-    }
-  },
+    <main>
+      <FlashMessenger />
+      {//<FlashMessenger />
+      }
+      {children}
+    </main>
 
-  componentDidMount: function () {
-    socket.on('chat message', msg => {
-      this.onMessage(msg)
-    })
-  },
+    <footer>&copy; {currentYear} Rob McLarty</footer>
+  </div>
+);
 
-  onMessage: function (msg) {
-    this.setState({ messages: [...this.state.messages, msg] })
-  },
+App.propTypes = {
+  isAuthenticated: PropTypes.bool,
+  children: PropTypes.object
+};
 
-  onSubmit: function (e) {
-    const msg = this.refs.msg.value
-
-    e.preventDefault()
-    socket.emit('chat message', msg)
-    this.refs.msg.value = ''
-    this.refs.msg.focus()
-    this.refs.container.scrollTop = this.refs.container.scrollHeight
-  },
-
-  render: function () {
-    return (
-      <div className="rebelchat" ref="container">
-        <ul id="messages" ref="messages">
-          {this.state.messages.map((msg, index) => (
-            <li key={index}>{ msg }</li>
-          ))}
-        </ul>
-
-        <form onSubmit={ this.onSubmit }>
-          <input
-              id="msg"
-              ref="msg"
-              autoComplete="off"
-          />
-          <button
-              type="submit">
-            Send
-          </button>
-        </form>
-      </div>
-    )
-  }
-})
-
-export default App
+export default App;

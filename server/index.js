@@ -42,12 +42,36 @@ app.use('/', [
   publicRoutes
 ])
 
-app.use('/', [
-  cred.requireAccessToken,
-  userRoutes
-])
-
 // Sockets
+
+// auth middleware
+const jwt = require('jsonwebtoken')
+
+io.use((socket, next) => {
+  const token = socket.request._query.token;
+  const options = {
+    issuer: cred.issuer,
+    algorithms: [cred.accessOpts.algorithm]
+  }
+
+  if (!token) {
+    console.log('No token provided with socket connection.')
+    return next(new Error('No token provided.'))
+  }
+
+  jwt.verify(token, cred.accessOpts.publicKey, options, (err, payload) => {
+    if (err) {
+      console.log('Unauthorized socket connection')
+      return next(new Error('Unauthorized socket connection'))
+    }
+
+    console.log('socket authenticated')
+
+    next()
+  })
+})
+
+// main app
 io.on('connection', socket => {
   console.log('a user connected')
 
