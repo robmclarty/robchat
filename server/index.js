@@ -4,6 +4,8 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const socketio = require('socket.io')
+const cred = require('./cred')
+const config = require('../config/server')
 
 const app = express()
 const io = socketio()
@@ -23,9 +25,19 @@ if (process.env.NODE_ENV === ('development' || 'test')) {
 }
 
 // Routes
-app.get('/', (req, res) => {
-  res.sendFile('index.html', { root: './build' })
-})
+const publicRoutes = require('./routes/public_routes')
+const userRoutes = require('./routes/user_routes')
+const authRoutes = require('./routes/auth_routes')
+
+app.use('/', [
+  authRoutes,
+  publicRoutes
+])
+
+app.use('/', [
+  cred.requireAccessToken,
+  userRoutes
+])
 
 // Sockets
 io.on('connection', socket => {

@@ -6,8 +6,6 @@ const socket = io()
 const App = React.createClass({
   displayName: 'App',
 
-
-
   getInitialState: function () {
     return {
       messages: []
