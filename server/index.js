@@ -4,6 +4,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const socketio = require('socket.io')
+const mongoose = require('mongoose')
 const cred = require('./cred')
 const config = require('../config/server')
 
@@ -23,6 +24,13 @@ if (process.env.NODE_ENV === ('development' || 'test')) {
 if (process.env.NODE_ENV === ('development' || 'test')) {
   app.use(morgan('dev'))
 }
+
+// Database
+mongoose.Promise = global.Promise
+mongoose.connect(config.database)
+mongoose.connection.on('connected', () => console.log('Connected to Mongo.'))
+mongoose.connection.on('error', err => console.log('Database Error: ', err))
+mongoose.connection.on('disconnected', () => console.log('Disconnected from Mongo.'))
 
 // Routes
 const publicRoutes = require('./routes/public_routes')

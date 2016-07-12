@@ -3,6 +3,7 @@
 const mongoose = require('mongoose')
 const argon2 = require('argon2')
 const URLSafe = require('urlsafe-base64')
+const striptags = require('striptags')
 
 const SALT_LENGTH = 32
 
@@ -77,8 +78,10 @@ UserSchema.pre('save', function (next) {
   // If password has changed, hash it before saving to the database.
   argon2.generateSalt(SALT_LENGTH)
     .then(salt => argon2.hash(user.password, salt, ARGON2_OPTIONS))
-    .then(hash => user.password = hash)
-    .then(next())
+    .then(hash => {
+      user.password = hash
+      next()
+    })
     .catch(next)
 })
 
@@ -97,7 +100,8 @@ const tokenPayload = function () {
     username: this.username,
     email: this.email,
     isActive: this.isActive,
-    isAdmin: this.isAdmin
+    isAdmin: this.isAdmin,
+    permissions: {}
   }
 }
 
@@ -120,6 +124,28 @@ Object.assign(UserSchema.methods, {
   verifyPassword,
   tokenPayload,
   toJSON
+})
+
+// Given a user object, check for any corresponding attributes in the updates
+// modify the user object that are allowed by the properties of the auth object.
+const updatedUser = ({ auth = {}, targetUser = {}, updates = {} }) => {
+  const user = Object.assign({}, targetUser)
+
+  if (updates.hasOwnProperty('username')) user.username = striptags(updates.username)
+  if (updates.hasOwnProperty('email')) user.email = striptags(updates.email)
+  if (updates.hasOwnProperty('password')) user.password = updates.password
+
+  // Only admins can activate or de-activate users.
+  if (updates.hasOwnProperty('isActive') && auth.isAdmin) user.isActive = updates.isActive
+
+  // Only other admins can assign admin status to users.
+  if (updates.hasOwnProperty('isAdmin') && auth.isAdmin) user.isAdmin = updates.isAdmin
+
+  return user
+}
+
+Object.assign(UserSchema.statics, {
+  updatedUser
 })
 
 module.exports = mongoose.model('User', UserSchema)
