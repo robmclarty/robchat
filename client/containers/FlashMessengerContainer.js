@@ -5,12 +5,7 @@ import FlashMessenger from '../components/FlashMessenger';
 const mapStateToProps = (state, ownProps) => ({
   status: state.flashMessages.status,
   messages: state.flashMessages.list,
-  isVisible: (state.flashMessages.isVisible// ||
-    // state.users.isFetching ||
-    // state.messages.isFetching
-  )
-  // isFetchingMessages: state.messages.isFetching,
-  // isFetchingUsers: state.users.isFetching
+  isVisible: state.flashMessages.isVisible
 });
 
 const mapDispatchToProps = dispatch => ({

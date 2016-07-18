@@ -54,14 +54,12 @@ gulp.task('build:app', function () {
   const stream = browserify(browserifyOptions)
     .transform(babelify.configure(babelifyOptions))
 
-  vendors.forEach(vendor => {
-    stream.external(vendor)
-  })
+  vendors.forEach(vendor => stream.external(vendor))
 
   return stream.bundle()
     .pipe(source('application.js'))
     .pipe(buffer())
-    .pipe(gulpif(!isProduction, sourcemaps.init({ loadMaps: true, debug: true })))
+    .pipe(gulpif(!isProduction, sourcemaps.init({ loadMaps: true })))
       .pipe(gulpif(isProduction, uglify()))
     .pipe(gulpif(!isProduction, sourcemaps.write('.')))
     .pipe(gulp.dest('./build/javascripts'))

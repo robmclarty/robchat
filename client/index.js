@@ -12,7 +12,7 @@ import { autoLogin } from './actions'
 import requireAuth from './containers/AuthenticatedComponent'
 import App from './containers/AppContainer'
 import Login from './containers/LoginContainer'
-// import Register from './containers/RegisterContainer'
+import Register from './containers/RegisterContainer'
 import Chat from './containers/ChatContainer'
 // import Friends from './containers/FriendsContainer'
 // import Profile from './containers/ProfileContainer'
@@ -47,9 +47,7 @@ render(
       <Route path="/rebelchat" component={App}>
         <IndexRoute component={Login} />
         <Route path="/rebelchat/login" component={Login} />
-        {/*
-          <Route path="/rebelchat/register" component={Register} />
-        */}
+        <Route path="/rebelchat/register" component={Register} />
         <Route path="/rebelchat/chat" component={Chat} />
         {/*
         <Route path="/rebelchat/friends" component={Friends} />

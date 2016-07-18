@@ -11,7 +11,10 @@ import {
   LOGOUT_SUCCESS,
   LOGOUT_FAIL
 } from '../constants/ActionTypes';
-import { STATUS_PENDING } from '../constants/FlashMessageTypes';
+import {
+  STATUS_PENDING,
+  STATUS_SUCCESS
+} from '../constants/FlashMessageTypes';
 import {
   updateLocalTokens,
   removeLocalTokens,
@@ -30,13 +33,27 @@ const startup = dispatch => {
     .then(dispatch(showFlashMessages({ status: STATUS_PENDING, messages: ['Loading resources...'] })))
     // .then(dispatch(fetchMessages()))
     // .then(dispatch(fetchUsers()))
-    .then(dispatch(hideFlashMessages()));
+    .then(dispatch(hideFlashMessages()))
 };
 
 
 // Register
 // --------
 export const register = creds => (dispatch, callApi) => {
+  dispatch(registerPending())
+
+  return callApi({
+    url: `${ config.authRoot }/registration`,
+    method: 'POST',
+    body: creds,
+    requireAuth: false
+  })
+    .then(res => res.user)
+    .then(user => {
+      console.log('user: ', user)
+
+    })
+    .catch(err => dispatch(registerFail(err)))
 }
 
 export const registerPending = () => ({
@@ -45,6 +62,9 @@ export const registerPending = () => ({
 
 export const registerSuccess = () => ({
   type: registerSuccess,
+  accessToken,
+  refreshToken,
+  tokenPayload: decodedPayload(accessToken),
   receivedAt: Date.now()
 })
 
@@ -67,14 +87,14 @@ export const registerFail = err => ({
 //   password: 'my-s3cret_Password'
 // }
 export const login = creds => (dispatch, callApi) => {
-  dispatch(loginPending());
+  dispatch(loginPending())
 
   return callApi({ url: tokensUrl, method: 'POST', body: creds, requireAuth: false })
     .then(res => res.tokens)
     .then(updateLocalTokens)
     .then(tokens => dispatch(loginSuccess(tokens)))
     .catch(err => dispatch(loginFail(err)))
-    .then(startup(dispatch));
+    .then(startup(dispatch))
 };
 
 // TODO: Might want to handle auto-login failure differently than regular
@@ -86,19 +106,15 @@ export const autoLogin = () => (dispatch, callApi, getState) => {
     .then(updateLocalTokens)
     .then(tokens => dispatch(loginSuccess(tokens)))
     .catch(err => dispatch(loginFail(err)))
-    .then(startup(dispatch));
+    .then(startup(dispatch))
 };
 
 const loginPending = () => ({
   type: LOGIN_PENDING
 });
 
-const mapFail = err => {
-  console.log('Error loading map: ', err);
-};
-
 const loginSuccess = tokens => {
-  const { accessToken, refreshToken } = tokens;
+  const { accessToken, refreshToken } = tokens
 
   return {
     type: LOGIN_SUCCESS,

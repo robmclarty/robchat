@@ -15,6 +15,7 @@ const Header = ({
 
   const loggedOutNav = (
     <nav className="site-nav">
+      <Link to="/rebelchat/register">Sign Up</Link>
       <Link to="/rebelchat/login">Login</Link>
     </nav>
   );

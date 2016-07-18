@@ -10,8 +10,7 @@ const App = ({ isAuthenticated, currentPath, children }) => (
 
     <main>
       <FlashMessenger />
-      {//<FlashMessenger />
-      }
+
       {children}
     </main>
 

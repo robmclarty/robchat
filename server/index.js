@@ -39,6 +39,7 @@ const authRoutes = require('./routes/auth_routes')
 
 app.use('/', [
   authRoutes,
+  userRoutes,
   publicRoutes
 ])
 

@@ -1,5 +1,6 @@
 'use strict'
 
+const striptags = require('striptags')
 const { createError, BAD_REQUEST } = require('../helpers/error_helper')
 const User = require('../models/user')
 const cred = require('../cred')
@@ -23,21 +24,35 @@ const postUsers = (req, res, next) => {
 // Create a new user that is guaranteed to not be an admin. This is to be used
 // for public-facing signup/registration with the app.
 const postRegistration = (req, res, next) => {
-  const user = User.updatedUser({
-    auth: req[cred.key].payload,
-    targetUser: new User(),
-    updates: req.body
-  })
+  const username = striptags(req.body.username)
+  const email = striptags(req.body.email)
+  const password = req.body.password
 
-  // Admin users cannot be created through this endpoint.
-  newUser.isAdmin = false
+  User.findOne({ email })
+    .then(user => {
+      if (user) throw createError({
+        status: BAD_REQUEST,
+        message: `The email your provided is already registered to an account.`
+      })
 
-  user.save()
-    .then(res.json({
-      success: true,
-      message: 'Registration successful.',
-      user: newUser
-    }))
+      const newUser = new User({
+        username,
+        email,
+        password,
+        isActive: true,
+        isAdmin: false
+      })
+
+      return newUser.save()
+    })
+    .then(user => {
+      // TODO: verify email after signup is complete
+      res.json({
+        success: true,
+        message: 'New account created successfully.',
+        user
+      })
+    })
     .catch(next)
 }
 
