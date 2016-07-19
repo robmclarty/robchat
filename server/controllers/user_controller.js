@@ -125,7 +125,6 @@ const deleteUser = (req, res, next) => {
     .catch(next)
 }
 
-
 Object.assign(exports, {
   postUsers,
   postRegistration,

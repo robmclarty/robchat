@@ -1,9 +1,11 @@
 'use strict'
 
 const mongoose = require('mongoose')
+const { ObjectId } = mongoose.Schema.Types
 const argon2 = require('argon2')
 const URLSafe = require('urlsafe-base64')
 const striptags = require('striptags')
+const Friendship = require('./friendship')
 
 const SALT_LENGTH = 32
 
@@ -56,6 +58,12 @@ const UserSchema = new mongoose.Schema({
     location: { type: String, required: false },
     website: { type: String, required: false },
     company: { type: String, require: false }
+  },
+  relationships: {
+    friends: [{ type: ObjectId, ref: 'User' }],
+    friendRequests: [{ type: ObjectId, ref: 'User' }],
+    favorites: [{ type: ObjectId, ref: 'User' }],
+    bannedFriends: [{ type: ObjectId, ref: 'User' }]
   },
   loginAt: { type: Date, required: true, default: Date.now },
   createdAt: { type: Date, required: true, default: Date.now },
