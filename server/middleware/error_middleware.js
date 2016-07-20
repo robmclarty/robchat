@@ -9,52 +9,47 @@ const {
   GENERIC_ERROR
 } = require('../helpers/error_helper')
 
-const unauthorized = (err, req, res, next) => {
-  if (err.status !== UNAUTHORIZED) return next(err)
+const unauthorized = (error, req, res, next) => {
+  if (error.status !== UNAUTHORIZED) return next(error)
 
   res.status(UNAUTHORIZED).send({
-    success: false,
-    message: err.message || 'Unauthorized.',
-    error: err
+    message: error.message || 'Unauthorized.',
+    error
   })
 }
 
-const forbidden = (err, req, res, next) => {
-  if (err.status !== FORBIDDEN) return next(err)
+const forbidden = (error, req, res, next) => {
+  if (error.status !== FORBIDDEN) return next(error)
 
   res.status(FORBIDDEN).send({
-    success: false,
-    message: err.message || 'Forbidden.',
-    error: err
+    message: error.message || 'Forbidden.',
+    error
   })
 }
 
-const badRequest = (err, req, res, next) => {
-  if (err.status !== BAD_REQUEST) return next(err)
+const badRequest = (error, req, res, next) => {
+  if (error.status !== BAD_REQUEST) return next(error)
 
   res.status(BAD_REQUEST).send({
-    success: false,
-    message: err.message || 'Bad Request',
-    error: err
+    message: error.message || 'Bad Request',
+    error
   })
 }
 
-const unprocessable = (err, req, res, next) => {
-  if (err.status !== UNPROCESSABLE) return next(err)
+const unprocessable = (error, req, res, next) => {
+  if (error.status !== UNPROCESSABLE) return next(error)
 
   res.status(UNPROCESSABLE).send({
-    success: false,
-    message: err.message || 'Unprocessable entity.',
-    error: err
+    message: error.message || 'Unprocessable entity.',
+    error
   })
 }
 
 // If there's still an error at this point, return a generic 500 error.
-const genericError = (err, req, res, next) => {
+const genericError = (error, req, res, next) => {
   res.status(GENERIC_ERROR).send({
-    success: false,
-    message: err.message || 'Internal server error.',
-    error: err
+    message: error.message || 'Internal server error.',
+    error
   })
 }
 
@@ -62,7 +57,6 @@ const genericError = (err, req, res, next) => {
 // return a 404 error.
 const pageNotFound = (req, res, next) => {
   res.status(PAGE_NOT_FOUND).send({
-    success: false,
     message: 'Page not found.'
   })
 }

@@ -16,12 +16,12 @@ const cred = require('../cred')
 router.route('/users/:id/friends')
   .all(cred.requireAccessToken)
   .get(getFriends)
+  .post(requestFriendship)
 
 // Most-used friendship actions.
 router.route('/users/:user_id/friends/:id')
   .all(cred.requireAccessToken)
   .get(getFriend)
-  .post(requestFriendship)
   .put(acceptFriendship)
   .delete(removeFriendship)
 

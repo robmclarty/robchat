@@ -14,7 +14,7 @@ import App from './containers/AppContainer'
 import Login from './containers/LoginContainer'
 import Register from './containers/RegisterContainer'
 import Chat from './containers/ChatContainer'
-// import Friends from './containers/FriendsContainer'
+import FriendsList from './containers/FriendsListContainer'
 // import Profile from './containers/ProfileContainer'
 import NotFound from './components/NotFound'
 
@@ -49,8 +49,8 @@ render(
         <Route path="/rebelchat/login" component={Login} />
         <Route path="/rebelchat/register" component={Register} />
         <Route path="/rebelchat/chat" component={Chat} />
+        <Route path="/rebelchat/friends" component={FriendsList} />
         {/*
-        <Route path="/rebelchat/friends" component={Friends} />
         <Route path="/rebelchat/profile" component={Profile} />
         */}
         <Route path="/rebelchat/*" component={NotFound} />

@@ -63,15 +63,19 @@ const jsonHeaders = {
 
 // Make the actual fetch() call. Reject if there's an error, otherwise resolve
 // with the parsed JSON body.
-const request = (url, options) => {
-  return fetch(url, options)
-    .then(res => res.json())
-    .then(json => Promise.resolve(json))
-    .catch(err => {
-      console.log('api error: ', err);
-      return Promise.reject(err)
-    });
-};
+const request = (url, options) => fetch(url, options)
+  .then(res => Promise.all([res, res.json()]))
+  .then(responses => {
+    const res = responses[0]
+    const json = responses[1]
+
+    if (!res.ok) throw json.message
+    return Promise.resolve(json)
+  })
+  .catch(err => {
+    console.log('Error: ', err);
+    return Promise.reject(err)
+  })
 
 // Decode base64 token and return the 2nd part (separated by '.') which is the
 // JWT payload object.
@@ -160,6 +164,7 @@ export const refreshTokensIfExpired = tokens => {
   };
 
   return request(tokensUrl, options)
+    .then(res => res.json())
     .then(json => Promise.resolve({ accessToken: json.accessToken, refreshToken }))
     .catch(err => Promise.reject(`Problem refreshing access-token: ${ err }`));
 };

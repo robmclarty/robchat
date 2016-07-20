@@ -45,6 +45,25 @@ app.use('/', [
   publicRoutes
 ])
 
+// API Errors
+const {
+  unauthorized,
+  forbidden,
+  badRequest,
+  unprocessable,
+  genericError,
+  pageNotFound
+} = require('./middleware/error_middleware')
+
+app.use([
+  unauthorized,
+  forbidden,
+  badRequest,
+  unprocessable,
+  genericError,
+  pageNotFound
+])
+
 // Sockets
 
 // auth middleware

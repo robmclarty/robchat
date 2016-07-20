@@ -16,7 +16,6 @@ const initialState = {
 const flashMessages = (state = initialState, action) => {
   switch (action.type) {
     case SHOW_FLASH_MESSAGES:
-      console.log('new message: ', action)
       return {
         ...state,
         isVisible: true,

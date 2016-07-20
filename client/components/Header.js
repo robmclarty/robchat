@@ -3,20 +3,24 @@ import { Link } from 'react-router';
 
 const Header = ({
   onClickChat,
+  onClickFriends,
+  onClickLogin,
   onClickLogout,
+  onClickSignup,
   isAuthenticated
 }) => {
   const loggedInNav = (
     <nav className="site-nav">
       <button onClick={onClickChat}>Chat</button>
+      <button onClick={onClickFriends}>Friends</button>
       <button onClick={onClickLogout}>Logout</button>
     </nav>
   );
 
   const loggedOutNav = (
     <nav className="site-nav">
-      <Link to="/rebelchat/register">Sign Up</Link>
-      <Link to="/rebelchat/login">Login</Link>
+      <button onClick={onClickSignup}>Sign Up</button>
+      <button onClick={onClickLogin}>Login</button>
     </nav>
   );
 

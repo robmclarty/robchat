@@ -23,16 +23,17 @@ import {
 } from '../middleware/jwt-api';
 import {
   showFlashMessages,
-  hideFlashMessages
+  hideFlashMessages,
+  fetchFriends
 } from './';
 
 const tokensUrl = `${ config.authRoot }/tokens`;
 
-const startup = dispatch => {
+const startup = (dispatch, state) => {
   return Promise.resolve()
     .then(dispatch(showFlashMessages({ status: STATUS_PENDING, messages: ['Loading resources...'] })))
     // .then(dispatch(fetchMessages()))
-    // .then(dispatch(fetchUsers()))
+    .then(dispatch(fetchFriends(state.auth.tokenPayload.userId)))
     .then(dispatch(hideFlashMessages()))
 };
 
@@ -48,9 +49,9 @@ export const register = creds => (dispatch, callApi) => {
     body: creds,
     requireAuth: false
   })
-    .then(res => res.user)
+    .then(json => json.user)
     .then(user => {
-      console.log('user: ', user)
+      console.log('registered user: ', user)
 
     })
     .catch(err => dispatch(registerFail(err)))
@@ -86,15 +87,20 @@ export const registerFail = err => ({
 //   username: 'johndoe',
 //   password: 'my-s3cret_Password'
 // }
-export const login = creds => (dispatch, callApi) => {
+export const login = creds => (dispatch, callApi, getState) => {
   dispatch(loginPending())
 
-  return callApi({ url: tokensUrl, method: 'POST', body: creds, requireAuth: false })
-    .then(res => res.tokens)
+  return callApi({
+    url: tokensUrl,
+    method: 'POST',
+    body: creds,
+    requireAuth: false
+  })
+    .then(json => json.tokens)
     .then(updateLocalTokens)
     .then(tokens => dispatch(loginSuccess(tokens)))
+    .then(() => startup(dispatch, getState()))
     .catch(err => dispatch(loginFail(err)))
-    .then(startup(dispatch))
 };
 
 // TODO: Might want to handle auto-login failure differently than regular
@@ -105,8 +111,8 @@ export const autoLogin = () => (dispatch, callApi, getState) => {
   return freshTokens(getState())
     .then(updateLocalTokens)
     .then(tokens => dispatch(loginSuccess(tokens)))
+    .then(() => startup(dispatch, getState()))
     .catch(err => dispatch(loginFail(err)))
-    .then(startup(dispatch))
 };
 
 const loginPending = () => ({
