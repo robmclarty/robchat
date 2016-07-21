@@ -24,7 +24,8 @@ import {
 import {
   showFlashMessages,
   hideFlashMessages,
-  fetchFriends
+  fetchFriends,
+  fetchProfile
 } from './';
 
 const tokensUrl = `${ config.authRoot }/tokens`;
@@ -32,8 +33,8 @@ const tokensUrl = `${ config.authRoot }/tokens`;
 const startup = (dispatch, state) => {
   return Promise.resolve()
     .then(dispatch(showFlashMessages({ status: STATUS_PENDING, messages: ['Loading resources...'] })))
-    // .then(dispatch(fetchMessages()))
-    .then(dispatch(fetchFriends(state.auth.tokenPayload.userId)))
+    .then(dispatch(fetchProfile(state.auth.tokenPayload.userId)))
+    //.then(dispatch(fetchFriends(state.auth.tokenPayload.userId)))
     .then(dispatch(hideFlashMessages()))
 };
 

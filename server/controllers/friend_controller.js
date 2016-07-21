@@ -16,8 +16,8 @@ const cred = require('../cred')
 // GET /users/:id/friends
 const getFriends = (req, res, next) => {
   User.findById(req.params.id)
-    .populate('relationships.friends')
-    .then(user => user.relationships.friends)
+    .populate('friends', 'id username')
+    .then(user => user.friends)
     .then(users => res.json({
       message: 'Friends found.',
       users
@@ -35,7 +35,7 @@ const getFriend = (req, res, next) => {
       const user = users[0];
       const friend = users[1];
 
-      const friends = user.relationships.friends.map(id => String(id))
+      const friends = user.friends.map(id => String(id))
 
       if (!friends.includes(friend.id)) throw createError({
         status: FORBIDDEN,
@@ -80,9 +80,9 @@ const requestFriendship = (req, res, next) => {
       })
 
       // Map mongoose array of ObjectIds to array of strings for comparisons.
-      const requesterFriends = requester.relationships.friends.map(id => String(id))
-      const requestedFriendRequests = requested.relationships.friendRequests.map(id => String(id))
-      const requestedBannedFriends = requested.relationships.bannedFriends.map(id => String(id))
+      const requesterFriends = requester.friends.map(id => String(id))
+      const requestedFriendRequests = requested.friendRequests.map(id => String(id))
+      const requestedBannedFriends = requested.bannedFriends.map(id => String(id))
 
       if (requesterFriends.includes(requested.id)) throw createError({
         status: UNPROCESSABLE,
@@ -99,7 +99,7 @@ const requestFriendship = (req, res, next) => {
         message: 'You have been banned by this user. You cannot be friends.'
       })
 
-      requested.relationships.friendRequests.push(requester)
+      requested.friendRequests.push(requester)
 
       return requested.save()
     })
@@ -121,8 +121,8 @@ const acceptFriendship = (req, res, next) => {
       const requested = users[0];
       const requester = users[1];
 
-      const requestedFriendRequests = requested.relationships.friendRequests.map(id => String(id))
-      const requestedFriends = requested.relationships.friends.map(id => String(id))
+      const requestedFriendRequests = requested.friendRequests.map(id => String(id))
+      const requestedFriends = requested.friends.map(id => String(id))
 
       if (!requestedFriendRequests.includes(requester.id)) throw createError({
         status: BAD_REQUEST,
@@ -134,9 +134,9 @@ const acceptFriendship = (req, res, next) => {
         message: 'This user is already your friend.'
       })
 
-      requested.relationships.friends.push(requester)
-      requester.relationships.friends.push(requested)
-      requested.relationships.friendRequests.remove(requester)
+      requested.friends.push(requester)
+      requester.friends.push(requested)
+      requested.friendRequests.remove(requester)
 
       return Promise.all([
         requested.save(),
@@ -156,14 +156,14 @@ const removeFriendship = (req, res, next) => {
 
   User.findById(req.params.user_id)
     .then(user => {
-      const friends = user.relationships.friends.map(id => String(id))
+      const friends = user.friends.map(id => String(id))
 
       if (!friends.includes(friendId)) throw createError({
         status: UNPROCESSABLE,
         message: 'You are currently not friends with this user.'
       })
 
-      user.relationships.friends.remove(friendId)
+      user.friends.remove(friendId)
 
       return user.save()
     })

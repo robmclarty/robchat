@@ -1,6 +1,7 @@
 'use strict'
 
 const express = require('express')
+const expressValidator = require('express-validator')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const socketio = require('socket.io')
@@ -13,6 +14,7 @@ const io = socketio()
 
 // Accept application/json
 app.use(bodyParser.json())
+app.use(expressValidator())
 
 // Serve static files from /build in development (on the production server,
 // this would be handled by a web server/proxy like nginx).

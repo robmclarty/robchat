@@ -67,7 +67,13 @@ const getUsers = (req, res, next) => {
 }
 
 const getUser = (req, res, next) => {
+  req.checkParams('id', 'Not a valid user id').isMongoId()
+
   User.findById(req.params.id)
+    .populate({
+      path: 'friends friendRequests bannedFriends',
+      select: 'id username'
+    })
     .then(user => {
       if (!user) throw createError({
         status: BAD_REQUEST,
@@ -86,6 +92,9 @@ const getUser = (req, res, next) => {
 // Only allow updating of specific fields, check for their existence explicitly,
 // and strip any html tags from String fields to mitigate XSS attacks.
 const putUser = (req, res, next) => {
+  req.checkParams('id', 'Not a valid user id').isMongoId()
+  req.sanitizeBody().escape()
+
   User.findById(req.params.id)
     .then(user => {
       if (!user) throw createError({
@@ -109,6 +118,8 @@ const putUser = (req, res, next) => {
 }
 
 const deleteUser = (req, res, next) => {
+  req.checkParams('id', 'Not a valid user id').isMongoId()
+
   User.findByIdAndRemove(req.params.id)
     .then(user => {
       if (!user) throw createError({

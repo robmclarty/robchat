@@ -17,6 +17,7 @@ import Header from '../components/Header';
 // changeFilter() operation at intervals so as not to overload the cpu.
 
 const mapStateToProps = state => ({
+  username: state.auth.tokenPayload.username,
   isAuthenticated: state.auth.isAuthenticated,
   currentPath: state.routing.locationBeforeTransitions.pathname
 });

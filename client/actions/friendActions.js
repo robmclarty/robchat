@@ -24,7 +24,7 @@ export const fetchFriends = userId => (dispatch, callApi) => {
     url: `${ config.authRoot }/users/${ userId }/friends`,
     method: 'GET'
   })
-    .then(res => dispatch(storeFriends(res.users)))
+    .then(json => dispatch(storeFriends(json.users)))
     .then(() => dispatch(fetchFriendsSuccess()))
     .catch(err => dispatch(fetchFriendsFail(err)))
 }

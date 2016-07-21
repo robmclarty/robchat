@@ -51,20 +51,15 @@ const UserSchema = new mongoose.Schema({
       message: '{ VALUE } is not a valid email address.'
     }
   },
+
   isActive: { type: Boolean, required: true, default: true },
   isAdmin: { type: Boolean, required: true, default: false },
-  profile: {
-    name: { type: String, required: false },
-    location: { type: String, required: false },
-    website: { type: String, required: false },
-    company: { type: String, require: false }
-  },
-  relationships: {
-    friends: [{ type: ObjectId, ref: 'User' }],
-    friendRequests: [{ type: ObjectId, ref: 'User' }],
-    favorites: [{ type: ObjectId, ref: 'User' }],
-    bannedFriends: [{ type: ObjectId, ref: 'User' }]
-  },
+
+  friends: [{ type: ObjectId, ref: 'User' }],
+  friendRequests: [{ type: ObjectId, ref: 'User' }],
+  favorites: [{ type: ObjectId, ref: 'User' }],
+  bannedFriends: [{ type: ObjectId, ref: 'User' }],
+
   loginAt: { type: Date, required: true, default: Date.now },
   createdAt: { type: Date, required: true, default: Date.now },
   updatedAt: { type: Date, required: true, default: Date.now }
@@ -119,9 +114,15 @@ const toJSON = function () {
     id: this.id,
     username: this.username,
     email: this.email,
+
     isActive: this.isActive,
     isAdmin: this.isAdmin,
-    profile: this.profile,
+
+    friends: this.friends,
+    friendRequests: this.friendRequests,
+    favorites: this.favorites,
+    bannedFriends: this.bannedFriends,
+
     loginAt: this.loginAt,
     createdAt: this.createdAt,
     updatedAt: this.updatedAt

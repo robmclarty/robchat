@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { Link } from 'react-router';
 
 const Header = ({
+  username,
   onClickChat,
   onClickFriends,
   onClickLogin,
@@ -11,6 +12,7 @@ const Header = ({
 }) => {
   const loggedInNav = (
     <nav className="site-nav">
+      {username}
       <button onClick={onClickChat}>Chat</button>
       <button onClick={onClickFriends}>Friends</button>
       <button onClick={onClickLogout}>Logout</button>
