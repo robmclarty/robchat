@@ -55,11 +55,6 @@ const UserSchema = new mongoose.Schema({
   isActive: { type: Boolean, required: true, default: true },
   isAdmin: { type: Boolean, required: true, default: false },
 
-  friends: [{ type: ObjectId, ref: 'User' }],
-  friendRequests: [{ type: ObjectId, ref: 'User' }],
-  favorites: [{ type: ObjectId, ref: 'User' }],
-  bannedFriends: [{ type: ObjectId, ref: 'User' }],
-
   loginAt: { type: Date, required: true, default: Date.now },
   createdAt: { type: Date, required: true, default: Date.now },
   updatedAt: { type: Date, required: true, default: Date.now }
@@ -108,6 +103,26 @@ const tokenPayload = function () {
   }
 }
 
+const requestFriendship = function (user) {
+  return Friendship.request(this.id, user.id)
+}
+
+const acceptFriendship = function (user) {
+  return Friendship.accept(this.id, user.id)
+}
+
+const declineFriendship = function (user) {
+  return Friendship.decline(this.id, user.id)
+}
+
+const banFriendship = function (user) {
+  return Friendship.ban(this.id, user.id)
+}
+
+const getFriends = function () {
+  return Friendship.getFriends(this.id)
+}
+
 // More data returned in JSON form than in token payload.
 const toJSON = function () {
   return {
@@ -132,6 +147,11 @@ const toJSON = function () {
 Object.assign(UserSchema.methods, {
   verifyPassword,
   tokenPayload,
+  requestFriendship,
+  acceptFriendship,
+  declineFriendship,
+  banFriendship,
+  getFriends,
   toJSON
 })
 

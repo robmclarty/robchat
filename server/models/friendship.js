@@ -68,7 +68,7 @@ const newFriendship = function (userId, friendId, status) {
   })
 }
 
-const requestFriendship = function (requester, requestee) {
+const request = function (requester, requestee) {
   const findRequesterFriendship = findFriendship(requester.id, requestee.id)
   const findRequesteeFriendship = findFriendship(requestee.id, requester.id)
 
@@ -123,7 +123,7 @@ const requestFriendship = function (requester, requestee) {
     })
 }
 
-const acceptFriendship = function (requester, accepter) {
+const accept = function (accepter, requester) {
   const findRequesterFriendship = findFriendship(requester.id, accepter.id)
   const findAccepterFriendship = findFriendship(accepter.id, requester.id)
 
@@ -148,7 +148,7 @@ const acceptFriendship = function (requester, accepter) {
     })
 }
 
-const declineFriendship = function (user, decliner) {
+const decline = function (decliner, user) {
   const findUserFriendship = findFriendship(user.id, decliner.id)
   const findDeclinerFriendship = findFriendship(decliner.id, user.id)
 
@@ -173,7 +173,7 @@ const declineFriendship = function (user, decliner) {
     })
 }
 
-const banFriendship = function (user, banner) {
+const ban = function (banner, user) {
   const findUserFriendship = findFriendship(user.id, banner.id)
   const findBannerFriendship = findFriendship(banner.id, user.id)
 
@@ -198,7 +198,7 @@ const banFriendship = function (user, banner) {
     })
 }
 
-const getFriendsFor = function (user) {
+const getFriends = function (user) {
   return new Promise((resolve, reject) => {
     this.find({})
       .where({ friendId: user.id, status: STATUS.ACCEPTED })
@@ -207,7 +207,7 @@ const getFriendsFor = function (user) {
   })
 }
 
-const getRequestsFor = function (user) {
+const getRequests = function (user) {
   return new Promise((resolve, reject) => {
     this.find({})
       .where({ userId: user.id, status: STATUS.REQUESTED })
@@ -216,7 +216,7 @@ const getRequestsFor = function (user) {
   })
 }
 
-const getRejectionsFor = function (user) {
+const getRejections = function (user) {
   return new Promise((resolve, reject) => {
     this.find({})
       .where({ userId: user.id, status: STATUS.REJECTED })
@@ -225,7 +225,7 @@ const getRejectionsFor = function (user) {
   })
 }
 
-const getDeclinesFor = function (user) {
+const getDeclines = function (user) {
   return new Promise((resolve, reject) => {
     this.find({})
       .where({ userId: user.id, status: STATUS.DECLINED })
@@ -234,7 +234,7 @@ const getDeclinesFor = function (user) {
   })
 }
 
-const getBansFor = function (user) {
+const getBans = function (user) {
   return new Promise((resolve, reject) => {
     this.find({})
       .where({ userId: user.id, status: STATUS.BANNED })
@@ -244,15 +244,15 @@ const getBansFor = function (user) {
 }
 
 Object.assign(FriendshipSchema.statics, STATUS, {
-  requestFriendship,
-  acceptFriendship,
-  declineFriendship,
-  banFriendship,
-  getFriendsFor,
-  getRequestsFor,
-  getRejectionsFor,
-  getDeclinesFor,
-  getBansFor
+  request,
+  accept,
+  decline,
+  ban,
+  getFriends,
+  getRequests,
+  getRejections,
+  getDeclines,
+  getBans
 })
 
 module.exports = mongoose.model('Friendship', FriendshipSchema)
