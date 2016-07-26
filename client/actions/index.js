@@ -1,4 +1,4 @@
 export * from './authActions'
-export * from './flashMessageActions'
+export * from './flashActions'
 export * from './relationshipActions'
 export * from './profileActions'

@@ -14,7 +14,7 @@ import {
 import {
   STATUS_PENDING,
   STATUS_SUCCESS
-} from '../constants/FlashMessageTypes';
+} from '../constants/FlashTypes';
 import {
   updateLocalTokens,
   removeLocalTokens,
@@ -22,8 +22,8 @@ import {
   decodedPayload
 } from '../middleware/jwt-api';
 import {
-  showFlashMessages,
-  hideFlashMessages,
+  showFlash,
+  hideFlash,
   fetchRelationships,
   fetchProfile
 } from './';
@@ -34,13 +34,13 @@ const startup = (dispatch, state) => {
   const userId = state.auth.tokenPayload.userId
 
   return Promise.resolve()
-    .then(dispatch(showFlashMessages({
+    .then(dispatch(showFlash({
       status: STATUS_PENDING,
       messages: ['Loading resources...']
     })))
     .then(dispatch(fetchProfile(userId)))
     .then(dispatch(fetchRelationships(userId)))
-    .then(dispatch(hideFlashMessages()))
+    .then(dispatch(hideFlash()))
 };
 
 

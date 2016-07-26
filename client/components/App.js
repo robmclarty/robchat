@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import Header from '../containers/HeaderContainer';
-import FlashMessenger from '../containers/FlashMessengerContainer';
+import Flash from '../containers/FlashContainer';
 
 const currentYear = new Date().getFullYear();
 
@@ -9,7 +9,7 @@ const App = ({ isAuthenticated, currentPath, children }) => (
     <Header currentPath={currentPath} />
 
     <main>
-      <FlashMessenger />
+      <Flash />
 
       {children}
     </main>

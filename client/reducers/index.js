@@ -1,13 +1,13 @@
 import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
 import auth from './auth'
-import flashMessages from './flashMessages'
+import flash from './flash'
 import profile from './profile'
 import relationships from './relationship'
 
 const rootReducer = combineReducers({
   auth,
-  flashMessages,
+  flash,
   profile,
   relationships,
   routing: routerReducer

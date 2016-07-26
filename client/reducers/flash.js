@@ -1,28 +1,28 @@
 import {
-  SHOW_FLASH_MESSAGES,
-  HIDE_FLASH_MESSAGES,
+  SHOW_FLASH,
+  HIDE_FLASH,
   ADD_FLASH_MESSAGE,
-  CLEAR_FLASH_MESSAGES,
-  CHANGE_FLASH_MESSAGE_STATUS
+  RESET_FLASH,
+  CHANGE_FLASH_STATUS
 } from '../constants/ActionTypes';
-import { STATUS_PENDING } from '../constants/FlashMessageTypes';
+import { STATUS_PENDING } from '../constants/FlashTypes';
 
 const initialState = {
   isVisible: false,
   status: STATUS_PENDING,
-  list: []
+  messages: []
 };
 
-const flashMessages = (state = initialState, action) => {
+const flash = (state = initialState, action) => {
   switch (action.type) {
-    case SHOW_FLASH_MESSAGES:
+    case SHOW_FLASH:
       return {
         ...state,
         isVisible: true,
         status: action.status,
-        list: [action.messages]
+        messages: [...action.messages]
       };
-    case HIDE_FLASH_MESSAGES:
+    case HIDE_FLASH:
       return {
         ...state,
         isVisible: false
@@ -30,14 +30,14 @@ const flashMessages = (state = initialState, action) => {
     case ADD_FLASH_MESSAGE:
       return {
         ...state,
-        list: [...state.flashMessages.list, action.message]
+        messages: [...state.messages, action.message]
       };
-    case CLEAR_FLASH_MESSAGES:
+    case RESET_FLASH:
       return {
         ...state,
         messages: []
       };
-    case CHANGE_FLASH_MESSAGE_STATUS:
+    case CHANGE_FLASH_STATUS:
       return {
         ...state,
         status: action.status
@@ -47,4 +47,4 @@ const flashMessages = (state = initialState, action) => {
   };
 };
 
-export default flashMessages;
+export default flash;

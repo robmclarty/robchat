@@ -1,8 +1,8 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
-import { register, showFlashMessages } from '../actions';
-import { STATUS_SUCCESS } from '../constants/FlashMessageTypes';
+import { register, showFlash } from '../actions';
+import { STATUS_SUCCESS } from '../constants/FlashTypes';
 
 import Register from '../components/Register';
 
@@ -12,7 +12,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onSubmit: creds => dispatch(register(creds))
-    .then(dispatch(showFlashMessages({
+    .then(dispatch(showFlash({
       status: STATUS_SUCCESS,
       messages: ['Registration Complete']
     })))

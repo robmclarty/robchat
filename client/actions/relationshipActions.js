@@ -12,8 +12,8 @@ import {
   STATUS_PENDING,
   STATUS_SUCCESS,
   STATUS_FAIL
-} from '../constants/FlashMessageTypes';
-import { showFlashMessages } from './';
+} from '../constants/FlashTypes';
+import { showFlash } from './';
 
 // Fetch Friends
 // -------------
@@ -59,12 +59,12 @@ export const requestFriendship = (userId, username) => (dispatch, callApi) => {
     method: 'POST',
     body: { username }
   })
-    .then(() => dispatch(showFlashMessages({
+    .then(() => dispatch(showFlash({
       status: STATUS_SUCCESS,
       messages: ['Friend request sent.']
     })))
     .then(() => dispatch(fetchRelationships(userId)))
-    .catch(err => dispatch(showFlashMessages({
+    .catch(err => dispatch(showFlash({
       status: STATUS_FAIL,
       messages: [err]
     })))
@@ -92,12 +92,12 @@ export const acceptFriendship = (userId, friendId) => (dispatch, callApi) => {
     url: `${ config.authRoot }/users/${ userId }/friends/${ friendId }`,
     method: 'PUT'
   })
-    .then(() => dispatch(showFlashMessages({
+    .then(() => dispatch(showFlash({
       status: STATUS_SUCCESS,
       messages: ['Friend request accepted.']
     })))
     .then(() => dispatch(fetchRelationships(userId)))
-    .catch(err => dispatch(showFlashMessages({
+    .catch(err => dispatch(showFlash({
       status: STATUS_FAIL,
       messages: [err]
     })))
@@ -111,12 +111,12 @@ export const declineFriendship = (userId, friendId) => (dispatch, callApi) => {
     url: `${ config.authRoot }/users/${ userId }/friends/${ friendId }`,
     method: 'DELETE'
   })
-    .then(() => dispatch(showFlashMessages({
+    .then(() => dispatch(showFlash({
       status: STATUS_SUCCESS,
       messages: ['Friend request declined.']
     })))
     .then(() => dispatch(fetchRelationships(userId)))
-    .catch(err => dispatch(showFlashMessages({
+    .catch(err => dispatch(showFlash({
       status: STATUS_FAIL,
       messages: [err]
     })))
