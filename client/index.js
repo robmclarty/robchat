@@ -6,7 +6,7 @@ import { Router, Route, Redirect, IndexRoute, browserHistory } from 'react-route
 import { syncHistoryWithStore, routerMiddleware, push } from 'react-router-redux'
 import jwtApi from './middleware/jwt-api'
 import appReducer from './reducers'
-import { autoLogin } from './actions'
+import { autoLogin, resetFlash } from './actions'
 
 // Containers
 import requireAuth from './containers/AuthenticatedComponent'
@@ -41,15 +41,17 @@ const history = syncHistoryWithStore(browserHistory, store)
 // Try to login from tokens in localstorage.
 store.dispatch(autoLogin())
 
+const resetFlashOnEnter = () => store.dispatch(resetFlash())
+
 render(
   <Provider store={store}>
     <Router history={history}>
       <Route path="/rebelchat" component={App}>
         <IndexRoute component={Login} />
-        <Route path="/rebelchat/login" component={Login} />
-        <Route path="/rebelchat/register" component={Register} />
-        <Route path="/rebelchat/chat" component={Chat} />
-        <Route path="/rebelchat/friends" component={FriendsList} />
+        <Route path="/rebelchat/login" component={Login} onEnter={resetFlashOnEnter} />
+        <Route path="/rebelchat/register" component={Register} onEnter={resetFlashOnEnter} />
+        <Route path="/rebelchat/chat" component={Chat} onEnter={resetFlashOnEnter} />
+        <Route path="/rebelchat/friends" component={FriendsList} onEnter={resetFlashOnEnter} />
         {/*
         <Route path="/rebelchat/profile" component={Profile} />
         */}
