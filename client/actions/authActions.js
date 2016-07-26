@@ -24,17 +24,22 @@ import {
 import {
   showFlashMessages,
   hideFlashMessages,
-  fetchFriends,
+  fetchRelationships,
   fetchProfile
 } from './';
 
 const tokensUrl = `${ config.authRoot }/tokens`;
 
 const startup = (dispatch, state) => {
+  const userId = state.auth.tokenPayload.userId
+
   return Promise.resolve()
-    .then(dispatch(showFlashMessages({ status: STATUS_PENDING, messages: ['Loading resources...'] })))
-    .then(dispatch(fetchProfile(state.auth.tokenPayload.userId)))
-    //.then(dispatch(fetchFriends(state.auth.tokenPayload.userId)))
+    .then(dispatch(showFlashMessages({
+      status: STATUS_PENDING,
+      messages: ['Loading resources...']
+    })))
+    .then(dispatch(fetchProfile(userId)))
+    .then(dispatch(fetchRelationships(userId)))
     .then(dispatch(hideFlashMessages()))
 };
 

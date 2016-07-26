@@ -1,8 +1,8 @@
 import {
-  STORE_FRIENDS,
-  FETCH_FRIENDS_PENDING,
-  FETCH_FRIENDS_SUCCESS,
-  FETCH_FRIENDS_FAIL,
+  STORE_RELATIONSHIPS,
+  FETCH_RELATIONSHIPS_PENDING,
+  FETCH_RELATIONSHIPS_SUCCESS,
+  FETCH_RELATIONSHIPS_FAIL,
   REQUEST_FRIENDSHIP_PENDING,
   REQUEST_FRIENDSHIP_SUCCESS,
   REQUEST_FRIENDSHIP_FAIL
@@ -10,17 +10,18 @@ import {
 import fetchable from '../transducers/fetchable';
 
 const defaultState = {
-  list: [],
+  friends: [],
+  requests: [],
+  rejections: [],
+  declines: [],
+  bans: [],
   isRequestingFriendship: false
 }
 
-const friends = (state = defaultState, action) => {
+const relationships = (state = defaultState, action) => {
   switch (action.type) {
-  case STORE_FRIENDS:
-    return {
-      ...state,
-      list: action.users
-    }
+  case STORE_RELATIONSHIPS:
+    return action.relationships
   case REQUEST_FRIENDSHIP_PENDING:
     return {
       ...state,
@@ -29,6 +30,10 @@ const friends = (state = defaultState, action) => {
   case REQUEST_FRIENDSHIP_SUCCESS:
     return {
       ...state,
+      requests: [
+        ...requests,
+        action.friend
+      ],
       isRequestingFriendship: false
     }
   case REQUEST_FRIENDSHIP_FAIL:
@@ -41,10 +46,10 @@ const friends = (state = defaultState, action) => {
   }
 }
 
-const fetchableFriends = fetchable(friends, {
-  FETCH_PENDING: FETCH_FRIENDS_PENDING,
-  FETCH_SUCCESS: FETCH_FRIENDS_SUCCESS,
-  FETCH_FAIL: FETCH_FRIENDS_FAIL
+const fetchableRelationships = fetchable(relationships, {
+  FETCH_PENDING: FETCH_RELATIONSHIPS_PENDING,
+  FETCH_SUCCESS: FETCH_RELATIONSHIPS_SUCCESS,
+  FETCH_FAIL: FETCH_RELATIONSHIPS_FAIL
 })
 
-export default fetchableFriends
+export default fetchableRelationships

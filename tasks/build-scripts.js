@@ -10,12 +10,16 @@ const source = require('vinyl-source-stream')
 const buffer = require('vinyl-buffer')
 
 const vendors = [
+  'localforage',
+  'moment',
+  'node-fetch',
   'react',
   'react-dom',
-  'moment',
-  'redux',
   'react-redux',
+  'react-router',
+  'react-router-redux',
   'react-scroll',
+  'redux',
   'socket.io-client'
 ]
 

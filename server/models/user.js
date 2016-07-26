@@ -16,6 +16,9 @@ const ARGON2_OPTIONS = {
   argon2d: false // use agron2i
 }
 
+// Attributes used to populate friend objects.
+const FRIEND_ATTRIBUTES = 'id username'
+
 // Simple validation regex for email addresses. It just checks for '@' and '.'.
 // Anything more than this is overkill imho and fails to capture new and emerging
 // address schemas (e.g., ending in '.ninja', or including tags with a '+').
@@ -144,6 +147,13 @@ const toJSON = function () {
   }
 }
 
+const toFriend = function () {
+  return {
+    id: this.id,
+    username: this.username
+  }
+}
+
 Object.assign(UserSchema.methods, {
   verifyPassword,
   tokenPayload,
@@ -152,7 +162,8 @@ Object.assign(UserSchema.methods, {
   declineFriendship,
   banFriendship,
   getFriends,
-  toJSON
+  toJSON,
+  toFriend
 })
 
 // Given a user object, check for any corresponding attributes in the updates
@@ -174,6 +185,7 @@ const updatedUser = ({ auth = {}, targetUser = {}, updates = {} }) => {
 }
 
 Object.assign(UserSchema.statics, {
+  FRIEND_ATTRIBUTES,
   updatedUser
 })
 

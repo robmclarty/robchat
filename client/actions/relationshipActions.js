@@ -1,9 +1,9 @@
 import config from '../../config/client';
 import {
-  STORE_FRIENDS,
-  FETCH_FRIENDS_PENDING,
-  FETCH_FRIENDS_SUCCESS,
-  FETCH_FRIENDS_FAIL,
+  STORE_RELATIONSHIPS,
+  FETCH_RELATIONSHIPS_PENDING,
+  FETCH_RELATIONSHIPS_SUCCESS,
+  FETCH_RELATIONSHIPS_FAIL,
   REQUEST_FRIENDSHIP_PENDING,
   REQUEST_FRIENDSHIP_SUCCESS,
   REQUEST_FRIENDSHIP_FAIL
@@ -17,34 +17,34 @@ import { showFlashMessages } from './';
 
 // Fetch Friends
 // -------------
-export const fetchFriends = userId => (dispatch, callApi) => {
-  dispatch(fetchFriendsPending())
+export const fetchRelationships = userId => (dispatch, callApi) => {
+  dispatch(fetchRelationshipsPending())
 
   return callApi({
-    url: `${ config.authRoot }/users/${ userId }/friends`,
+    url: `${ config.authRoot }/users/${ userId }/relationships`,
     method: 'GET'
   })
-    .then(json => dispatch(storeFriends(json.users)))
-    .then(() => dispatch(fetchFriendsSuccess()))
-    .catch(err => dispatch(fetchFriendsFail(err)))
+    .then(json => dispatch(storeRelationships(json.relationships)))
+    .then(() => dispatch(fetchRelationshipsSuccess()))
+    .catch(err => dispatch(fetchRelationshipsFail(err)))
 }
 
-const storeFriends = users => ({
-  type: STORE_FRIENDS,
-  users
+const storeRelationships = relationships => ({
+  type: STORE_RELATIONSHIPS,
+  relationships
 })
 
-const fetchFriendsPending = () => ({
-  type: FETCH_FRIENDS_PENDING
+const fetchRelationshipsPending = () => ({
+  type: FETCH_RELATIONSHIPS_PENDING
 })
 
-const fetchFriendsSuccess = () => ({
-  type: FETCH_FRIENDS_SUCCESS,
+const fetchRelationshipsSuccess = () => ({
+  type: FETCH_RELATIONSHIPS_SUCCESS,
   receivedAt: Date.now()
 })
 
-const fetchFriendsFail = error => ({
-  type: FETCH_FRIENDS_FAIL,
+const fetchRelationshipsFail = error => ({
+  type: FETCH_RELATIONSHIPS_FAIL,
   error
 })
 
