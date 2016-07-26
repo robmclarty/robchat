@@ -174,7 +174,7 @@ const acceptFriendship = (req, res, next) => {
   const requesterId = req.params.id
 
   Friendship.accept(accepterId, requesterId)
-    .then(friendships => req.json({
+    .then(friendships => res.json({
       message: 'Friendship accepted'
     }))
     .catch(next)

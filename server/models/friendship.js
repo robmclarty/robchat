@@ -304,8 +304,6 @@ const getRelationships = function (userId) {
           // do nothing
         }
 
-        console.log('relationships: ', relationships)
-
         return relationships
       }, defaultRelationships))
       .then(resolve)

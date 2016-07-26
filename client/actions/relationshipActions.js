@@ -63,6 +63,7 @@ export const requestFriendship = (userId, username) => (dispatch, callApi) => {
       status: STATUS_SUCCESS,
       messages: ['Friend request sent.']
     })))
+    .then(() => dispatch(fetchRelationships(userId)))
     .catch(err => dispatch(showFlashMessages({
       status: STATUS_FAIL,
       messages: [err]
@@ -82,3 +83,41 @@ const requestFriendshipFail = error => ({
   type: REQUEST_FRIENDSHIP_FAIL,
   error
 })
+
+
+// Accept Friendship
+// -----------------
+export const acceptFriendship = (userId, friendId) => (dispatch, callApi) => {
+  return callApi({
+    url: `${ config.authRoot }/users/${ userId }/friends/${ friendId }`,
+    method: 'PUT'
+  })
+    .then(() => dispatch(showFlashMessages({
+      status: STATUS_SUCCESS,
+      messages: ['Friend request accepted.']
+    })))
+    .then(() => dispatch(fetchRelationships(userId)))
+    .catch(err => dispatch(showFlashMessages({
+      status: STATUS_FAIL,
+      messages: [err]
+    })))
+}
+
+
+// Decline Friendship
+// ------------------
+export const declineFriendship = (userId, friendId) => (dispatch, callApi) => {
+  return callApi({
+    url: `${ config.authRoot }/users/${ userId }/friends/${ friendId }`,
+    method: 'DELETE'
+  })
+    .then(() => dispatch(showFlashMessages({
+      status: STATUS_SUCCESS,
+      messages: ['Friend request declined.']
+    })))
+    .then(() => dispatch(fetchRelationships(userId)))
+    .catch(err => dispatch(showFlashMessages({
+      status: STATUS_FAIL,
+      messages: [err]
+    })))
+}
