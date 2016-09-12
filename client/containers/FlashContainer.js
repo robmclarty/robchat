@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { hideFlashMessages } from '../actions'
+import { hideFlash } from '../actions'
 import Flash from '../components/Flash'
 
 const mapStateToProps = (state, ownProps) => ({

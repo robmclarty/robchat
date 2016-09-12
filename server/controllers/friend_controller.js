@@ -10,9 +10,6 @@ const User = require('../models/user')
 const Friendship = require('../models/friendship')
 const cred = require('../cred')
 
-// TODO: Don't send entire user object when referenced as a friend, instead
-// only send back user approved public attributes.
-
 // GET /users/:id/relationships
 const getRelationships = (req, res, next) => {
   Friendship.getRelationships(req.params.id)
@@ -31,15 +28,6 @@ const getFriends = (req, res, next) => {
       users
     }))
     .catch(next)
-
-  // User.findById(req.params.id)
-  //   .populate('friends', 'id username')
-  //   .then(user => user.friends)
-  //   .then(users => res.json({
-  //     message: 'Friends found.',
-  //     users
-  //   }))
-  //   .catch(next)
 }
 
 // GET /users/:user_id/friends/:id
@@ -66,29 +54,6 @@ const getFriend = (req, res, next) => {
       user
     }))
     .catch(next)
-
-  // Promise.all([
-  //   User.findById(req.params.user_id),
-  //   User.findById(req.params.id)
-  // ])
-  //   .then(users => {
-  //     const user = users[0];
-  //     const friend = users[1];
-  //
-  //     const friends = user.friends.map(id => String(id))
-  //
-  //     if (!friends.includes(friend.id)) throw createError({
-  //       status: FORBIDDEN,
-  //       message: 'This user is not your friend.'
-  //     })
-  //
-  //     return friend
-  //   })
-  //   .then(user => res.json({
-  //     message: 'Friend found.',
-  //     user
-  //   }))
-  //   .catch(next)
 }
 
 // POST /users/:id/friends
@@ -127,30 +92,6 @@ const requestFriendship = (req, res, next) => {
         target,
         Friendship.request(requester.id, target.id)
       ])
-
-      // Map mongoose array of ObjectIds to array of strings for comparisons.
-      // const requesterFriends = requester.friends.map(id => String(id))
-      // const requestedFriendRequests = requested.friendRequests.map(id => String(id))
-      // const requestedBannedFriends = requested.bannedFriends.map(id => String(id))
-      //
-      // if (requesterFriends.includes(requested.id)) throw createError({
-      //   status: UNPROCESSABLE,
-      //   message: 'This user is already your friend.'
-      // })
-      //
-      // if (requestedFriendRequests.includes(requester.id)) throw createError({
-      //   status: UNPROCESSABLE,
-      //   message: 'You have already requested to be friends. Acceptance is still pending.'
-      // })
-      //
-      // if (requestedBannedFriends.includes(requester.id)) throw createError({
-      //   status: FORBIDDEN,
-      //   message: 'You have been banned by this user. You cannot be friends.'
-      // })
-      //
-      // requested.friendRequests.push(requester)
-      //
-      // return requested.save()
     })
     .then(results => {
       const target = results[0];
@@ -178,42 +119,6 @@ const acceptFriendship = (req, res, next) => {
       message: 'Friendship accepted'
     }))
     .catch(next)
-
-  // Promise.all([
-  //   User.findById(req.params.user_id),
-  //   User.findById(req.params.id)
-  // ])
-  //   .then(users => {
-  //     const requested = users[0];
-  //     const requester = users[1];
-  //
-  //     const requestedFriendRequests = requested.friendRequests.map(id => String(id))
-  //     const requestedFriends = requested.friends.map(id => String(id))
-  //
-  //     if (!requestedFriendRequests.includes(requester.id)) throw createError({
-  //       status: BAD_REQUEST,
-  //       message: 'You currently have no friend request with that id.'
-  //     })
-  //
-  //     if (requestedFriends.includes(requester.id)) throw createError({
-  //       status: UNPROCESSABLE,
-  //       message: 'This user is already your friend.'
-  //     })
-  //
-  //     requested.friends.push(requester)
-  //     requester.friends.push(requested)
-  //     requested.friendRequests.remove(requester)
-  //
-  //     return Promise.all([
-  //       requested.save(),
-  //       requester.save()
-  //     ])
-  //   })
-  //   .then(users => res.json({
-  //     message: 'Friend request accepted.',
-  //     user: users[0]
-  //   }))
-  //   .catch(next)
 }
 
 // DELETE /users/:user_id/friends/:id
@@ -226,25 +131,6 @@ const declineFriendship = (req, res, next) => {
       message: 'Friendship declined.'
     }))
     .catch(next)
-
-  // User.findById(req.params.user_id)
-  //   .then(user => {
-  //     const friends = user.friends.map(id => String(id))
-  //
-  //     if (!friends.includes(friendId)) throw createError({
-  //       status: UNPROCESSABLE,
-  //       message: 'You are currently not friends with this user.'
-  //     })
-  //
-  //     user.friends.remove(friendId)
-  //
-  //     return user.save()
-  //   })
-  //   .then(user => res.json({
-  //     message: 'Friend removed.',
-  //     user
-  //   }))
-  //   .catch(next)
 }
 
 // POST /users/:user_id/friends/:id/ban

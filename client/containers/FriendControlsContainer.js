@@ -3,9 +3,10 @@ import { connect } from 'react-redux'
 import {
   requestFriendship,
   acceptFriendship,
-  declineFriendship
+  declineFriendship,
+  createPrivateChat
 } from '../actions'
-import FriendsList from '../components/FriendsList'
+import FriendControls from '../components/FriendControls'
 
 const mapStateToProps = state => {
   return {
@@ -22,8 +23,9 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  onClickFriend: (userId, friendId) => console.log('clicked friend', friendId),
   onRequestFriendship: (friendId, username) => dispatch(requestFriendship(friendId, username)),
+  onClickChat: (userId, friendId) => dispatch(createPrivateChat(userId, friendId)),
+  onClickFriend: (userId, friendId) => console.log('clicked friend', friendId),
   onClickReject: (userId, friendId) => dispatch(declineFriendship(userId, friendId)),
   onClickAccept: (userId, friendId) => dispatch(acceptFriendship(userId, friendId)),
   onClickDecline: (userId, friendId) => dispatch(declineFriendship(userId, friendId)),
@@ -31,9 +33,9 @@ const mapDispatchToProps = dispatch => ({
   onClickRemoveBan: (userId, friendId) => console.log('removing ban ', friendId)
 })
 
-const FriendsListContainer = connect(
+const FriendControlsContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(FriendsList)
+)(FriendControls)
 
-export default FriendsListContainer
+export default FriendControlsContainer

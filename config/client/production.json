@@ -1,5 +1,4 @@
 {
-  "appName": "healthbook-logger",
-  "authRoot": "https://healthmessenger-ehc.mbenablers.com",
-  "messagesRoot": "https://healthbook-logger.mbenablers.com"
+  "appName": "rebel-chat",
+  "authRoot": "https://rebel-chat.com"
 }

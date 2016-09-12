@@ -5,8 +5,8 @@ module.exports = {
   issuer: 'rebel-chat',
   database: process.env.DATABASE || 'mongodb://localhost:27017/rebel-chat',
   access: {
-    privateKeyPath: process.env.PRIVATE_KEY || './config/private.pem',
-    publicKeyPath: process.env.PUBLIC_KEY || './config/public.pem',
+    privateKeyPath: process.env.PRIVATE_KEY || './config/private-sample.pem',
+    publicKeyPath: process.env.PUBLIC_KEY || './config/public-sample.pem',
     expiresIn: process.env.EXPIRES_IN || '24 hours',
     algorithm: 'ES384' // ECDSA using P-384 curve and SHA-384 hash algorithm
   },
