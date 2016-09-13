@@ -1,6 +1,12 @@
 import React, { PropTypes } from 'react'
 import io from 'socket.io-client'
 
+const addUserChatObj = (users, userChatObj) => {
+  return users.findIndex(user => user.socketId === userChatObj.socketId) >= 0 ?
+    users :
+    [...users, userChatObj]
+}
+
 const Chat = React.createClass({
   displayName: 'Chat',
 
@@ -16,10 +22,19 @@ const Chat = React.createClass({
     }
   },
 
+  // Each message is an object with the format:
+  // {
+  //   body: 'String of actual text messsage typed by sender.',
+  //   user: {
+  //     userId: '12345',
+  //     username: 'username-of-sender'
+  //   }
+  // }
   getInitialState: function () {
     return {
       messages: [],
-      socket: {}
+      socket: {},
+      users: []
     }
   },
 
@@ -27,34 +42,69 @@ const Chat = React.createClass({
 
   },
 
+  componentWillUnmount: function () {
+    this.state.socket.disconnect()
+  },
+
   componentWillReceiveProps: function (nextProps) {
     // Only do this once, when accessToken has been populated.
-    if (nextProps.accessToken !== this.props.accessToken && this.props.accessToken === '') {
-      const socket = io.connect('http://localhost:3000', {
-        query:`token=${ nextProps.accessToken }`
+    if (nextProps.accessToken !== this.props.accessToken &&
+        this.props.accessToken === '') {
+      const socket = io.connect('http://localhost:3000')
+
+      socket.on('connect', () => {
+        console.log('socket created')
+
+        socket.emit('authenticate', {
+          token: nextProps.accessToken
+        })
+
+        socket.on('authenticated', () => {
+          console.log('socket authenticated successfully')
+
+          this.setState({ socket })
+
+          socket.on('chat:message', msg => this.onMessage(msg))
+
+          socket.on('user:join', users => {
+            this.setState({ users })
+          })
+
+          socket.on('user:leave', users => {
+            this.setState({ users })
+          })
+        })
+
+        socket.on('unauthorized', msg => {
+          console.log('socket connection is unauthorized')
+
+          socket.disconnect()
+        })
       })
-
-      // socket.on('connect', () => {
-      //   socket.emit('authenticate', { token: this.props.accessToken })
-      // })
-
-      socket.on('chat message', msg => {
-        this.onMessage(msg)
-      })
-
-      this.setState({ socket })
     }
   },
 
   onMessage: function (msg) {
-    this.setState({ messages: [...this.state.messages, msg] })
+    this.setState({
+      messages: [
+        ...this.state.messages,
+        msg
+      ]
+    })
   },
 
   onSubmit: function (e) {
     const msg = this.refs.msg.value
 
     e.preventDefault()
-    this.state.socket.emit('chat message', msg)
+
+    // Send message to server.
+    this.state.socket.emit('chat:message', {
+      body: msg,
+      user: this.props.user
+    })
+
+    // Reset input for accepting new messages.
     this.refs.msg.value = ''
     this.refs.msg.focus()
     this.refs.container.scrollTop = this.refs.container.scrollHeight
@@ -63,9 +113,19 @@ const Chat = React.createClass({
   render: function () {
     return (
       <div className="rebelchat" ref="container">
+        <ul id="users" ref="users">
+            {this.state.users.map((user, index) => (
+              <li key={index}>{ user.username }</li>
+            ))}
+        </ul>
+
         <ul id="messages" ref="messages">
           {this.state.messages.map((msg, index) => (
-            <li key={index}>{ msg }</li>
+            <li key={index}>
+              { msg.user.username }:
+              &nbsp;
+              { msg.body }
+            </li>
           ))}
         </ul>
 
