@@ -42,8 +42,8 @@ const deleteToken = (req, res, next) => {
     .catch(next)
 }
 
-Object.assign(exports, {
+module.exports = {
   postTokens,
   putTokens,
   deleteToken
-})
+}

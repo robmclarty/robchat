@@ -13,6 +13,6 @@ const broadcastEverything = socket => {
   })
 }
 
-Object.assign(exports, {
+module.exports = {
   broadcastEverything
-})
+}

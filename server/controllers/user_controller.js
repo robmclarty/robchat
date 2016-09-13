@@ -136,11 +136,11 @@ const deleteUser = (req, res, next) => {
     .catch(next)
 }
 
-Object.assign(exports, {
+module.exports = {
   postUsers,
   postRegistration,
   getUsers,
   getUser,
   putUser,
   deleteUser
-})
+}

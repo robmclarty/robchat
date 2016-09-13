@@ -150,7 +150,7 @@ io.on('connection', socket => {
   })
 })
 
-Object.assign(exports, {
+module.exports = {
   app,
   io
-})
+}

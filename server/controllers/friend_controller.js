@@ -160,7 +160,7 @@ const removeBan = (req, res, next) => {
     .catch(next)
 }
 
-Object.assign(exports, {
+module.exports = {
   getFriends,
   getFriend,
   getRelationships,
@@ -169,4 +169,4 @@ Object.assign(exports, {
   declineFriendship,
   banFriendship,
   removeBan
-})
+}
