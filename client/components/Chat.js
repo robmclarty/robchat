@@ -39,49 +39,53 @@ const Chat = React.createClass({
   },
 
   componentDidMount: function () {
-
+    // If there is already an existing token (e.g., because the user navigated
+    // away from this page and came back) re-initialize the socket connection.
+    if (this.props.accessToken && this.props.accessToken !== ' ')
+      this.initSocketConnection(this.props.accessToken)
   },
 
   componentWillUnmount: function () {
-    this.state.socket.disconnect()
+    if (this.state.socket) this.state.socket.close()
   },
 
   componentWillReceiveProps: function (nextProps) {
     // Only do this once, when accessToken has been populated.
     if (nextProps.accessToken !== this.props.accessToken &&
-        this.props.accessToken === '') {
-      const socket = io.connect('http://localhost:3000')
+        this.props.accessToken === '')
+      this.initSocketConnection(nextProps.accessToken)
+  },
 
-      socket.on('connect', () => {
-        console.log('socket created')
+  initSocketConnection: function (token) {
+    const socket = io.connect('http://localhost:3000')
 
-        socket.emit('authenticate', {
-          token: nextProps.accessToken
+    console.log('initiating socket connection')
+
+    socket.on('connect', () => {
+      socket.emit('authenticate', { token })
+
+      socket.on('authenticated', () => {
+        console.log('socket authenticated successfully')
+
+        this.setState({ socket })
+
+        socket.on('chat:message', msg => this.onMessage(msg))
+
+        socket.on('user:join', users => {
+          this.setState({ users })
         })
 
-        socket.on('authenticated', () => {
-          console.log('socket authenticated successfully')
-
-          this.setState({ socket })
-
-          socket.on('chat:message', msg => this.onMessage(msg))
-
-          socket.on('user:join', users => {
-            this.setState({ users })
-          })
-
-          socket.on('user:leave', users => {
-            this.setState({ users })
-          })
-        })
-
-        socket.on('unauthorized', msg => {
-          console.log('socket connection is unauthorized')
-
-          socket.disconnect()
+        socket.on('user:leave', users => {
+          this.setState({ users })
         })
       })
-    }
+
+      socket.on('unauthorized', msg => {
+        console.log('socket connection is unauthorized')
+
+        socket.disconnect()
+      })
+    })
   },
 
   onMessage: function (msg) {

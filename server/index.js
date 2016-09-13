@@ -71,31 +71,32 @@ app.use([
 // auth middleware
 const jwt = require('jsonwebtoken')
 
-// io.use((socket, next) => {
-//   const token = socket.request._query.token;
-//   const options = {
-//     issuer: cred.issuer,
-//     algorithms: [cred.accessOpts.algorithm]
-//   }
-//
-//   if (!token) {
-//     console.log('No token provided with socket connection.')
-//     return next(new Error('No token provided.'))
-//   }
-//
-//   jwt.verify(token, cred.accessOpts.publicKey, options, (err, payload) => {
-//     if (err) {
-//       console.log('Unauthorized socket connection')
-//       return next(new Error('Unauthorized socket connection'))
-//     }
-//
-//     console.log('socket authenticated')
-//
-//     next()
-//   })
-// })
+// JWT authentication middleware for socket.io
+const verifyToken = token => new Promise((resolve, reject) => {
+  const options = {
+    issuer: cred.issuer,
+    algorithms: [cred.accessOpts.algorithm]
+  }
 
-const createUserChatObj = (socketId, token) => {
+  if (!token) {
+    console.log('No token provided with socket connection.')
+    return reject(new Error('No token provided.'))
+  }
+
+  jwt.verify(token, cred.accessOpts.publicKey, options, (err, payload) => {
+    if (err) {
+      console.log('Unauthorized socket connection')
+      return reject(new Error('Unauthorized socket connection'))
+    }
+
+    resolve(token)
+  })
+})
+
+// Used to track all connected users.
+const socketUsers = {}
+
+const createSocketUser = (socketId, token) => {
   const payload = jwt.decode(token)
 
   return {
@@ -105,45 +106,46 @@ const createUserChatObj = (socketId, token) => {
   }
 }
 
-// Used to track all connected users.
-const socketUsers = {}
+const addSocketUser = (socketId, token) => {
+  socketUsers[socketId] = createSocketUser(socketId, token)
+}
+
+const removeSocketUser = (socketId) => {
+  delete socketUsers[socketId]
+}
 
 const connectedUsers = io => Object.keys(io.sockets.sockets).map(id => {
   return socketUsers[id]
 })
 
+const initSocketConnection = socket => {
+  io.sockets.emit('user:join', connectedUsers(io))
+
+  socket.on('chat:message', msg => {
+    console.log('message: ', msg)
+    io.sockets.emit('chat:message', msg)
+  })
+}
+
 // main app
 io.on('connection', socket => {
-  //console.log('a user connected', socket)
+  console.log('a user connected')
 
   socket.on('authenticate', data => {
-    const isAuthorized = true
-
-    if (!isAuthorized) {
-      // return socket.emit('unauthorized', error, () {
-      //   socket.disconnect('unauthorized')
-      // })
-    }
-
-    socketUsers[socket.id] = createUserChatObj(socket.id, data.token)
-
-//    console.log(io.sockets.connected)
-
-    socket.emit('authenticated')
-
-    io.sockets.emit('user:join', connectedUsers(io))
-
-    socket.on('chat:message', msg => {
-      console.log('message: ', msg)
-      io.sockets.emit('chat:message', msg)
-    })
+    verifyToken(data.token)
+      .catch(err => socket.emit('unauthorized', err, () => socket.close()))
+      .then(token => {
+        console.log('socket authenticated')
+        socket.emit('authenticated')
+        addSocketUser(socket.id, token)
+        initSocketConnection(socket)
+      })
+      .catch(err => console.log('problem initializing socket connection', err))
   })
 
   socket.on('disconnect', () => {
     console.log('user disconnected')
-
-    delete socketUsers[socket.id]
-
+    removeSocketUser(socket.id)
     io.sockets.emit('user:leave', connectedUsers(io))
   })
 })
