@@ -13,8 +13,6 @@ const App = ({ isAuthenticated, currentPath, children }) => (
 
       {children}
     </main>
-
-    <footer>&copy; {currentYear} Rob McLarty</footer>
   </div>
 );
 

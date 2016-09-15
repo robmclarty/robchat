@@ -23,6 +23,7 @@ const Chat = React.createClass({
   },
 
   // Each message is an object with the format:
+  // ```
   // {
   //   body: 'String of actual text messsage typed by sender.',
   //   user: {
@@ -30,6 +31,7 @@ const Chat = React.createClass({
   //     username: 'username-of-sender'
   //   }
   // }
+  // ```
   getInitialState: function () {
     return {
       messages: [],
@@ -116,30 +118,34 @@ const Chat = React.createClass({
 
   render: function () {
     return (
-      <div className="rebelchat" ref="container">
-        <ul id="users" ref="users">
+      <div className="chat" ref="container">
+        <ul id="users" ref="users" className="chat-users">
             {this.state.users.map((user, index) => (
               <li key={index}>{ user.username }</li>
             ))}
         </ul>
 
-        <ul id="messages" ref="messages">
+        <ul id="messages" ref="messages" className="chat-messages">
           {this.state.messages.map((msg, index) => (
             <li key={index}>
-              { msg.user.username }:
+              <b>{ msg.user.username }</b>
               &nbsp;
               { msg.body }
             </li>
           ))}
         </ul>
 
-        <form onSubmit={ this.onSubmit }>
+        <form onSubmit={ this.onSubmit } className="chat-form">
           <input
+              className="chat-input"
+              type="text"
               id="msg"
               ref="msg"
+              placeholder="Type a message here"
               autoComplete="off"
           />
           <button
+              className="chat-submit-button"
               type="submit">
             Send
           </button>

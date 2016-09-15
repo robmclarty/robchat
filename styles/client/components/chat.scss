@@ -1,0 +1,112 @@
+// Use border-box for all elements.
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+.global-header {
+  z-index: 2;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background-color: #fff;
+
+  .site-name {
+    margin: 0;
+    padding: 0;
+    line-height: 40px;
+    font-size: 20px;
+
+    img {
+      width: 75px;
+      height: 40px;
+    }
+    span {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 85px;
+    }
+  }
+  .site-nav {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+}
+
+main {
+  z-index: 1;
+  padding-top: 40px;
+}
+
+.chat {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #f0f0f0;
+
+  .chat-users {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 60px;
+    width: 150px;
+    margin: 0;
+    padding: 20px;
+    list-style: none;
+    background-color: darken(#f0f0f0, 10%);
+  }
+
+  .chat-messages {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 150px;
+    bottom: 60px;
+    margin: 0;
+    padding: 20px;
+    list-style: none;
+    overflow-x: none;
+    overflow-y: auto;
+  }
+
+  .chat-form {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+
+    .chat-input {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 100px;
+      bottom: 0;
+      width: 100%;
+      padding: 10px 16px;
+      border: 0;
+      outline: none;
+    }
+    .chat-submit-button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 100px;
+      border: 0;
+      background-color: grey;
+      color: white;
+
+      &:hover {
+        background-color: darken(grey, 10%);
+      }
+    }
+  }
+}
