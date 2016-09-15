@@ -1,0 +1,30 @@
+[
+  {
+    "name": "rebelchat",
+    "cwd": "/opt/rebelchat",
+    "script": "bin/www",
+    "max_memory_restart": "350M",
+    "watch": false,
+    "instances": 0,
+    "env": {
+      "PORT": 4000,
+      "APP_NAME": "rebelchat",
+      "ASSETS_PATH": "/srv/opt/rebelchat",
+      "NODE_ENV": "production",
+      "DATABASE": "mongodb://localhost:27017/rebelchat",
+      "JWT_ISSUER": "rebelchat",
+      "ACCESS_PRIVATE_KEY": "....",
+      "ACCESS_PUBLIC_KEY": "....",
+      "ACCESS_EXPIRES_IN": "24 days",
+      "ACCESS_ALG": "ES384",
+      "REFRESH_SECRET": "",
+      "REFRESH_EXPIRES_IN": "7 days",
+      "REFRESH_ALG": "HS512"
+    },
+    "error_file": "/var/opt/rebelchat/err.log",
+    "out_file": "/var/opt/rebelchat/out.log",
+    "merge_logs": true,
+    "log_date_format": "YYYY-MM-DD HH:mm Z",
+    "pid_file": "/var/opt/rebelchat/pm2.pid"
+  }
+]
