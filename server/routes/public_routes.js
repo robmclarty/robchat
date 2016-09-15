@@ -8,6 +8,6 @@ router.route('/')
 
 // App
 router.route('/rebelchat*')
-  .get((req, res) => res.sendFile('index.html', { root: './build' }))
+  .get((req, res) => res.sendFile('index.html', { root: './build/rebelchat' }))
 
 module.exports = router

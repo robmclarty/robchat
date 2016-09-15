@@ -11,12 +11,12 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onSubmit: creds => dispatch(register(creds))
-    .then(dispatch(showFlash({
-      status: STATUS_SUCCESS,
-      messages: ['Registration Complete']
-    })))
-    .then(dispatch(push(`/rebelchat/login`)))
+  // onSubmit: creds => dispatch(register(creds))
+  //   .then(dispatch(showFlash({
+  //     status: STATUS_SUCCESS,
+  //     messages: ['Registration Complete']
+  //   })))
+  //   .then(dispatch(push(`/rebelchat/login`)))
 });
 
 const RegisterContainer = connect(

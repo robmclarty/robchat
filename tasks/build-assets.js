@@ -11,5 +11,5 @@ gulp.task('build:assets', function () {
 // Copy admin html file to public folder.
 gulp.task('build:html', function () {
   return gulp.src('./client/index.html')
-    .pipe(gulp.dest('./build'))
+    .pipe(gulp.dest('./build/rebelchat'))
 })
