@@ -36,7 +36,8 @@ const Chat = React.createClass({
     return {
       messages: [],
       socket: {},
-      users: []
+      users: [],
+      shouldScrollToBottom: false
     }
   },
 
@@ -56,6 +57,18 @@ const Chat = React.createClass({
     if (nextProps.accessToken !== this.props.accessToken &&
         this.props.accessToken === '')
       this.initSocketConnection(nextProps.accessToken)
+  },
+
+  componentWillUpdate: function () {
+    const messagePanel = this.refs.messages
+    this.shouldScrollToBottom = messagePanel.scrollTop + messagePanel.offsetHeight === messagePanel.scrollHeight
+  },
+
+  componentDidUpdate: function () {
+    if (this.shouldScrollToBottom) {
+      const messagePanel = this.refs.messages
+      messagePanel.scrollTop = messagePanel.scrollHeight
+    }
   },
 
   initSocketConnection: function (token) {
