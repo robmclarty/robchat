@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 
 const Header = ({
   username,
+  onClickUsername,
   onClickChat,
   onClickFriends,
   onClickLogin,
@@ -12,7 +13,7 @@ const Header = ({
 }) => {
   const loggedInNav = (
     <nav className="site-nav">
-      {username}
+      <button onClick={onClickUsername}>{username}</button>
       <button onClick={onClickChat}>Chat</button>
       <button onClick={onClickFriends}>Friends</button>
       <button onClick={onClickLogout}>Logout</button>

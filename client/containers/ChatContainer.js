@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import Chat from '../components/Chat'
+import config from '../../config/client'
 
 // TODO: Change this so it is constructed on the server where a message emitted
 // by the client only includes the user's id, and then a chatUser object is
@@ -14,6 +15,7 @@ const createChatUser = tokenPayload => ({
 })
 
 const mapStateToProps = state => ({
+  host: config.socketUrl,
   isAuthenticated: state.auth.isAuthenticated,
   accessToken: state.auth.tokens.accessToken,
   user: createChatUser(state.auth.tokenPayload)

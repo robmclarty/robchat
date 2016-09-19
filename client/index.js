@@ -15,7 +15,7 @@ import Login from './containers/LoginContainer'
 import Register from './containers/RegisterContainer'
 import Chat from './containers/ChatContainer'
 import FriendControls from './containers/FriendControlsContainer'
-// import Profile from './containers/ProfileContainer'
+import Profile from './containers/ProfileContainer'
 import NotFound from './components/NotFound'
 
 // Detect and use chrome redux extension if available.
@@ -49,12 +49,10 @@ render(
       <Route path="/rebelchat" component={App}>
         <IndexRoute component={Login} />
         <Route path="/rebelchat/login" component={Login} onEnter={resetFlashOnEnter} />
+        <Route path="/rebelchat/profile" component={Profile} onEnter={resetFlashOnEnter} />
         <Route path="/rebelchat/register" component={Register} onEnter={resetFlashOnEnter} />
         <Route path="/rebelchat/chat" component={Chat} onEnter={resetFlashOnEnter} />
         <Route path="/rebelchat/friends" component={FriendControls} onEnter={resetFlashOnEnter} />
-        {/*
-        <Route path="/rebelchat/profile" component={Profile} />
-        */}
         <Route path="/rebelchat/*" component={NotFound} />
       </Route>
     </Router>

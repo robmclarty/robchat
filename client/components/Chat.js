@@ -11,6 +11,7 @@ const Chat = React.createClass({
   displayName: 'Chat',
 
   propTypes: {
+    host: PropTypes.string,
     isAuthenticated: PropTypes.bool,
     accessToken: PropTypes.string
   },
@@ -49,7 +50,10 @@ const Chat = React.createClass({
   },
 
   componentWillUnmount: function () {
-    if (this.state.socket) this.state.socket.close()
+    if (this.state.socket && typeof this.state.socket.close === 'function') {
+      console.log('closing socket connection')
+      this.state.socket.close()
+    }
   },
 
   componentWillReceiveProps: function (nextProps) {
@@ -72,7 +76,7 @@ const Chat = React.createClass({
   },
 
   initSocketConnection: function (token) {
-    const socket = io.connect('http://localhost:3000')
+    const socket = io.connect(this.props.host)
 
     console.log('initiating socket connection')
 

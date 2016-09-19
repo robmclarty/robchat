@@ -1,4 +1,5 @@
 {
-  "appName": "rebel-chat",
-  "authRoot": "http://localhost:3000"
+  "appName": "rebelchat",
+  "authRoot": "http://localhost:3000",
+  "socketUrl": "http://localhost:3000"
 }

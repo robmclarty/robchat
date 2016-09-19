@@ -1,8 +1,8 @@
 'use strict'
 
 const { readFileSync } = require('fs')
-//const gotCred = require('cred')
-const gotCred = require('../../cred/src')
+const gotCred = require('cred')
+//const gotCred = require('../../cred/src')
 const config = require('../config/server')
 const User = require('./models/user')
 
@@ -27,13 +27,18 @@ const cred = gotCred({
 // (just trow them) as they will be handled by cred itself and passed to your
 // error handling middleware from there.
 cred.use('basic', req => {
+  console.log('req: ', req.body)
   return User.findOne({ username: req.body.username })
-    .then(user => Promise.all([user, user.verifyPassword(req.body.password)]))
+    .then(user => {
+      if (!user) throw 'username or password do not match'
+
+      return Promise.all([user, user.verifyPassword(req.body.password)])
+    })
     .then(userMatch => {
       const user = userMatch[0]
       const isMatch = userMatch[1]
 
-      if (!isMatch) throw 'Unauthorized: username or password do not match.'
+      if (!isMatch) throw 'username or password do not match'
 
       return user
     })

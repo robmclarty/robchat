@@ -17,7 +17,7 @@ const Flash = ({
       <span className="flash-text">
         <ul className="flash-list">
           {messages && messages.map((message, i) => (
-            <li key={i}>{message}</li>
+            <li key={i}>{String(message)}</li>
           ))}
         </ul>
       </span>

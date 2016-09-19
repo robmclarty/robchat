@@ -166,27 +166,8 @@ Object.assign(UserSchema.methods, {
   toFriend
 })
 
-// Given a user object, check for any corresponding attributes in the updates
-// modify the user object that are allowed by the properties of the auth object.
-const updatedUser = ({ auth = {}, targetUser = {}, updates = {} }) => {
-  const user = Object.assign({}, targetUser)
-
-  if (updates.hasOwnProperty('username')) user.username = striptags(updates.username)
-  if (updates.hasOwnProperty('email')) user.email = striptags(updates.email)
-  if (updates.hasOwnProperty('password')) user.password = updates.password
-
-  // Only admins can activate or de-activate users.
-  if (updates.hasOwnProperty('isActive') && auth.isAdmin) user.isActive = updates.isActive
-
-  // Only other admins can assign admin status to users.
-  if (updates.hasOwnProperty('isAdmin') && auth.isAdmin) user.isAdmin = updates.isAdmin
-
-  return user
-}
-
 Object.assign(UserSchema.statics, {
-  FRIEND_ATTRIBUTES,
-  updatedUser
+  FRIEND_ATTRIBUTES
 })
 
 module.exports = mongoose.model('User', UserSchema)

@@ -66,4 +66,23 @@ function watch() {
 watch.description = 'Watch variable folders for changes and rebuild if necessary.'
 gulp.task(watch)
 
+// Deploy to server.
+function deploy(done) {
+  if (argv.host) process.env.SERVER_HOST = argv.host;
+
+  gulp.series(
+    buildProduction,
+    'deploy:assets',
+    'deploy:server',
+    'deploy:reload'
+  )()
+
+  return done()
+}
+deploy.description = 'Build for production and deploy to server, restarting the server when finished.'
+deploy.flags = {
+  '--host': 'Sets the host to where the server you want to deploy to is located.'
+}
+gulp.task(deploy)
+
 gulp.task('default', gulp.series(build, 'server', watch))

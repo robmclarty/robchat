@@ -12,6 +12,8 @@ const postTokens = (req, res, next) => {
   if (!req[cred.key] || !req[cred.key].tokens)
     return next(new Error('Authentication failed.'))
 
+    console.log('post tokens: ', req.body)
+
   res.json({
     success: true,
     message: 'Tokens generated successfully.',

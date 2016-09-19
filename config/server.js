@@ -3,7 +3,7 @@
 module.exports = {
   appName: process.env.APP_NAME || 'rebel-chat',
   issuer: process.env.JWT_ISSUER || 'rebel-chat',
-  database: process.env.DATABASE || 'mongodb://localhost:27017/rebel-chat',
+  database: process.env.DATABASE || 'mongodb://localhost:27017/rebelchat',
   access: {
     privateKeyPath: process.env.ACCESS_PRIVATE_KEY || './config/private-sample.pem',
     publicKeyPath: process.env.ACCESS_PUBLIC_KEY || './config/public-sample.pem',

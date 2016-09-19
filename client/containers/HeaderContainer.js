@@ -23,6 +23,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  onClickUsername: () => dispatch(push('/rebelchat/profile')),
   onClickChat: () => dispatch(push('/rebelchat/chat')),
   onClickFriends: () => dispatch(push('/rebelchat/friends')),
   onClickLogin: () => dispatch(push('/rebelchat/login')),

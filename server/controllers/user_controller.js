@@ -95,6 +95,9 @@ const putUser = (req, res, next) => {
   req.checkParams('id', 'Not a valid user id').isMongoId()
   req.sanitizeBody().escape()
 
+  const auth = req[cred.key].payload
+  const updates = req.body
+
   User.findById(req.params.id)
     .then(user => {
       if (!user) throw createError({
@@ -102,13 +105,18 @@ const putUser = (req, res, next) => {
         message: `No user found with id '${ req.params.id }'`
       })
 
-      return User.updatedUser({
-        auth: req[cred.key].payload,
-        targetUser: user,
-        updates: req.body
-      })
+      if (updates.hasOwnProperty('username')) user.set('username', striptags(updates.username))
+      if (updates.hasOwnProperty('email')) user.set('email', striptags(updates.email))
+      if (updates.hasOwnProperty('password')) user.set('password', updates.password)
+
+      // Only admins can activate or de-activate users.
+      if (updates.hasOwnProperty('isActive') && auth.isAdmin) user.set('isActive', updates.isActive)
+
+      // Only other admins can assign admin status to users.
+      if (updates.hasOwnProperty('isAdmin') && auth.isAdmin) user.set('isAdmin', updates.isAdmin)
+
+      return user.save()
     })
-    .then(user => user.save())
     .then(user => res.json({
       success: true,
       message: 'User updated.',

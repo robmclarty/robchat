@@ -20,6 +20,15 @@ const requireAdmin = (req, res, next) => isAdmin(req) ?
   next() :
   next('Unauthorized')
 
+const requireOwner = (req, res, next) =>
+  req.cred &&
+  req.cred.payload &&
+  req.params &&
+  req.params.id &&
+  (req.cred.payload.userId === req.params.id || req.cred.payload.isAdmin) ?
+    next() :
+    next('Unauthorized')
+
 // Use "registration" resource to handle signups. This is separate from creating
 // a "user" resource from the user_controller in that it is public-facing and
 // can be made more limited. It is to be used as part of a signup/registration
@@ -37,9 +46,9 @@ router.route('/users')
 
 // Users can only get and change data for themselves, not any other users.
 router.route('/users/:id')
-  .all([cred.requireAccessToken, requireAdmin])
-  .get(getUser)
+  .all(cred.requireAccessToken)
+  .get(requireOwner, getUser)
   .put(putUser)
-  .delete(deleteUser)
+  .delete(requireAdmin, deleteUser)
 
 module.exports = router
