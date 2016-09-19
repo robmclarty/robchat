@@ -161,11 +161,6 @@ const Chat = React.createClass({
               placeholder="Type a message here"
               autoComplete="off"
           />
-          <button
-              className="chat-submit-button"
-              type="submit">
-            Send
-          </button>
         </form>
       </div>
     )
