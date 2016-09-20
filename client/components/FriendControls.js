@@ -19,7 +19,7 @@ const FriendControls = ({
   onClickRemoveBan,
   onRequestFriendship
 }) => (
-  <section className="list-container">
+  <div className="page list-container">
     {friends.length === 0 &&
       <div>
         You have no friends. What a sad, sorry, soul you are.
@@ -115,7 +115,7 @@ const FriendControls = ({
     }
 
     <AddFriend onRequestFriendship={username => onRequestFriendship(userId, username) } />
-  </section>
+  </div>
 )
 
 FriendControls.propTypes = {

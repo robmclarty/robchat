@@ -18,34 +18,33 @@ const Login = React.createClass({
 
   render: function () {
     return (
-      <div>
+      <div className="page">
         <h1>Login</h1>
         <form onSubmit={this.onSubmit} className="login-form">
           <div className="field">
-              <label htmlFor="username">Username</label>
-              <br />
-              <input
-                  type="text"
-                  ref="username"
-                  id="username"
-                  name="username"
-              />
-            </div>
-            <div className="field">
-              <label htmlFor="password">Password</label>
-              <br />
-              <input
-                  type="password"
-                  ref="password"
-                  id="password"
-                  name="password"
-              />
-            </div>
-            <button
-                type="submit"
-                onClick={this.onSubmit}>
-              Login
-            </button>
+            <label htmlFor="username">Username</label>
+            <input
+                type="text"
+                ref="username"
+                id="username"
+                name="username"
+            />
+          </div>
+          <div className="field">
+            <label htmlFor="password">Password</label>
+            <input
+                type="password"
+                ref="password"
+                id="password"
+                name="password"
+            />
+          </div>
+          <br />
+          <button
+              type="submit"
+              onClick={this.onSubmit}>
+            Login
+          </button>
         </form>
       </div>
     );

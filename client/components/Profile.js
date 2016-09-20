@@ -39,27 +39,37 @@ const Profile = React.createClass({
     if (isFetching) return false
 
     return (
-      <div className="profile">
+      <div className="page profile">
         <h1>{username}</h1>
 
         <form className="profile-form" onSubmit={this.onSubmit}>
-          <input
-              ref="username"
-              type="text"
-              defaultValue={username}
-          />
-          <br />
-          <input
-              ref="password"
-              type="password"
-              placeholder="Leave blank to keep current password."
-          />
-          <br />
-          <input
-              ref="email"
-              type="text"
-              defaultValue={email}
-          />
+          <div className="field">
+            <label htmlFor="username">Username</label>
+            <input
+                id="username"
+                ref="username"
+                type="text"
+                defaultValue={username}
+            />
+          </div>
+          <div className="field">
+            <label htmlFor="password">Password</label>
+            <input
+                id="password"
+                ref="password"
+                type="password"
+                placeholder="Leave blank to keep current password."
+            />
+          </div>
+          <div className="field">
+            <label htmlFor="email">Email</label>
+            <input
+                id="email"
+                ref="email"
+                type="text"
+                defaultValue={email}
+            />
+          </div>
           <br />
           <button
               className="submit-button"

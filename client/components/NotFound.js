@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 
 const NotFound = () => (
-  <div className="not-found">
+  <div className="page not-found">
     Page Not Found
   </div>
 );

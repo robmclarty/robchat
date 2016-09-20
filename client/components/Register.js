@@ -19,14 +19,13 @@ const Register = React.createClass({
 
   render: function () {
     return (
-      <div>
+      <div className="page">
         <h1>Create an Account</h1>
         <p>Registration currently disabled.</p>
         {
         // <form onSubmit={this.onSubmit} className="login-form">
         //   <div className="field">
         //       <label htmlFor="username">Username</label>
-        //       <br />
         //       <input
         //           type="text"
         //           ref="username"
@@ -36,7 +35,6 @@ const Register = React.createClass({
         //     </div>
         //     <div className="field">
         //       <label htmlFor="email">Email</label>
-        //       <br />
         //       <input
         //           type="email"
         //           ref="email"
@@ -46,7 +44,6 @@ const Register = React.createClass({
         //     </div>
         //     <div className="field">
         //       <label htmlFor="password">Password</label>
-        //       <br />
         //       <input
         //           type="password"
         //           ref="password"
@@ -54,6 +51,7 @@ const Register = React.createClass({
         //           name="password"
         //       />
         //     </div>
+        //     <br />
         //     <button
         //         type="submit"
         //         onClick={this.onSubmit}>

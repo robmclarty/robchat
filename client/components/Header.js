@@ -31,7 +31,7 @@ const Header = ({
     <header className="global-header">
       <h1 className="site-name">
         <Link to="/rebelchat/">
-          <img src="/images/revolution.png" width="100" height="79" />
+          <img src="/favicon-32x32.png" width="32" height="32" />
           <span><b>Rebel Chat</b></span>
         </Link>
       </h1>

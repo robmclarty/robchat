@@ -1,51 +1,6 @@
-// Use border-box for all elements.
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-}
-
-.global-header {
-  z-index: 2;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 40px;
-  background-color: #fff;
-
-  .site-name {
-    margin: 0;
-    padding: 0;
-    line-height: 40px;
-    font-size: 20px;
-
-    img {
-      width: 70px;
-      height: 40px;
-    }
-    span {
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 85px;
-    }
-  }
-  .site-nav {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-  }
-}
-
-main {
-  z-index: 1;
-  padding-top: 40px;
-}
-
 .chat {
   position: absolute;
-  top: 40px;
+  top: $header_height;
   left: 0;
   right: 0;
   bottom: 0;
@@ -55,25 +10,31 @@ main {
     position: absolute;
     top: 0;
     left: 0;
-    bottom: 60px;
-    width: 150px;
+    bottom: $chat_input_height;
+    width: $chat_users_width;
     margin: 0;
     padding: 20px;
     list-style: none;
-    background-color: darken(#f0f0f0, 10%);
+    background-color: #aaa;
   }
 
   .chat-messages {
     position: absolute;
     top: 0;
     right: 0;
-    left: 150px;
-    bottom: 60px;
+    left: $chat_users_width;
+    bottom: $chat_input_height;
     margin: 0;
     padding: 20px;
     list-style: none;
     overflow-x: none;
     overflow-y: auto;
+    font-size: 1.2em;
+    background-color: #eee;
+
+    li {
+      margin-bottom: .2em;
+    }
   }
 
   .chat-form {
@@ -81,32 +42,19 @@ main {
     bottom: 0;
     left: 0;
     right: 0;
-    height: 60px;
+    height: $chat_input_height;
+    max-width: 100%;
 
     .chat-input {
       position: absolute;
       top: 0;
       left: 0;
-      right: 100px;
+      right: 0;
       bottom: 0;
       width: 100%;
       padding: 10px 16px;
       border: 0;
       outline: none;
-    }
-    .chat-submit-button {
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      width: 100px;
-      border: 0;
-      background-color: grey;
-      color: white;
-
-      &:hover {
-        background-color: darken(grey, 10%);
-      }
     }
   }
 }
