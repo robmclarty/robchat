@@ -6,6 +6,7 @@ const gulpif = require('gulp-if')
 const sourcemaps = require('gulp-sourcemaps')
 const browserify = require('browserify')
 const babelify = require('babelify')
+const envify = require('envify/custom')
 const source = require('vinyl-source-stream')
 const buffer = require('vinyl-buffer')
 
@@ -56,6 +57,7 @@ gulp.task('build:app', function () {
     plugins: ['babel-plugin-transform-object-rest-spread']
   }
   const stream = browserify(browserifyOptions)
+    .transform(envify())
     .transform(babelify.configure(babelifyOptions))
 
   vendors.forEach(vendor => stream.external(vendor))

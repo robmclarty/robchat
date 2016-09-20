@@ -48,7 +48,7 @@ router.route('/users')
 router.route('/users/:id')
   .all(cred.requireAccessToken)
   .get(requireOwner, getUser)
-  .put(putUser)
+  .put(requireOwner, putUser)
   .delete(requireAdmin, deleteUser)
 
 module.exports = router
