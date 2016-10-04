@@ -1,12 +1,10 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { createStore, applyMiddleware, compose } from 'redux'
 import { Provider } from 'react-redux'
 import { Router, Route, Redirect, IndexRoute, browserHistory } from 'react-router'
-import { syncHistoryWithStore, routerMiddleware, push } from 'react-router-redux'
-import jwtApi from './middleware/jwt-api'
-import appReducer from './reducers'
+import { syncHistoryWithStore, push } from 'react-router-redux'
 import { autoLogin, resetFlash } from './actions'
+import { configureStore } from './store'
 
 // Containers
 import requireAuth from './containers/AuthenticatedComponent'
@@ -18,22 +16,8 @@ import FriendControls from './containers/FriendControlsContainer'
 import Profile from './containers/ProfileContainer'
 import NotFound from './components/NotFound'
 
-// Detect and use chrome redux extension if available.
-const devTools = window.devToolsExtension ?
-  window.devToolsExtension() :
-  f => f
-
-// Setup custom middleware (esp. JWT API calls, and react-router redux store).
-const middlewares = compose(
-  applyMiddleware(
-    jwtApi,
-    routerMiddleware(browserHistory)
-  ),
-  devTools
-)
-
 // Create store from app's reducers combined with react-router's routerReducer.
-const store = createStore(appReducer, middlewares)
+const store = configureStore()
 
 // Hook up react-router history to redux store.
 const history = syncHistoryWithStore(browserHistory, store)

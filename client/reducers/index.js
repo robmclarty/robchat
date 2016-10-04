@@ -4,14 +4,14 @@ import auth from './auth'
 import flash from './flash'
 import profile from './profile'
 import relationships from './relationship'
-import messages from './messages'
+import chat from './chat'
 
 const rootReducer = combineReducers({
   auth,
   flash,
   profile,
   relationships,
-  messages,
+  chat,
   routing: routerReducer
 })
 

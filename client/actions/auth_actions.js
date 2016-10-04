@@ -1,5 +1,5 @@
-import { push } from 'react-router-redux';
-import config from '../../config/client';
+import { push } from 'react-router-redux'
+import config from '../../config/client'
 import {
   REGISTER_PENDING,
   REGISTER_SUCCESS,
@@ -10,38 +10,37 @@ import {
   LOGOUT_PENDING,
   LOGOUT_SUCCESS,
   LOGOUT_FAIL
-} from '../constants/ActionTypes';
-import {
-  STATUS_PENDING,
-  STATUS_SUCCESS
-} from '../constants/FlashTypes';
+} from '../constants/ActionTypes'
+import { STATUS_PENDING, STATUS_SUCCESS } from '../constants/FlashTypes'
 import {
   updateLocalTokens,
   removeLocalTokens,
   freshTokens,
   decodedPayload
-} from '../middleware/jwt-api';
+} from '../middleware/auth_middleware'
+import { configureSockets } from '../middleware/socket_middleware'
 import {
   showFlash,
   hideFlash,
   fetchRelationships,
   fetchProfile
-} from './';
+} from './'
 
-const tokensUrl = `${ config.authRoot }/tokens`;
+const tokensUrl = `${ config.authRoot }/tokens`
 
 const startup = (dispatch, state) => {
   const userId = state.auth.tokenPayload.userId
 
   return Promise.resolve()
-    .then(dispatch(showFlash({
+    .then(() => dispatch(showFlash({
       status: STATUS_PENDING,
       messages: ['Loading resources...']
     })))
-    .then(dispatch(fetchProfile(userId)))
-    .then(dispatch(fetchRelationships(userId)))
-    .then(dispatch(hideFlash()))
-};
+    .then(() => dispatch(configureSockets()))
+    .then(() => dispatch(fetchProfile(userId)))
+    .then(() => dispatch(fetchRelationships(userId)))
+    .then(() => dispatch(hideFlash()))
+}
 
 
 // Register
@@ -107,23 +106,23 @@ export const login = creds => (dispatch, callApi, getState) => {
     .then(tokens => dispatch(loginSuccess(tokens)))
     .then(() => startup(dispatch, getState()))
     .catch(err => dispatch(loginFail(err)))
-};
+}
 
 // TODO: Might want to handle auto-login failure differently than regular
 // failure so that there isn't an actual error message displayed necessarily.
 export const autoLogin = () => (dispatch, callApi, getState) => {
-  dispatch(loginPending());
+  dispatch(loginPending())
 
   return freshTokens(getState())
     .then(updateLocalTokens)
     .then(tokens => dispatch(loginSuccess(tokens)))
     .then(() => startup(dispatch, getState()))
     .catch(err => dispatch(loginFail(err)))
-};
+}
 
 const loginPending = () => ({
   type: LOGIN_PENDING
-});
+})
 
 const loginSuccess = tokens => {
   const { accessToken, refreshToken } = tokens
@@ -134,39 +133,42 @@ const loginSuccess = tokens => {
     refreshToken,
     tokenPayload: decodedPayload(accessToken),
     receivedAt: Date.now()
-  };
-};
+  }
+}
 
 const loginFail = err => ({
   type: LOGIN_FAIL,
   message: err,
   receivedAt: Date.now()
-});
+})
 
 
 // Logout
 // ------
 export const logout = () => (dispatch, callApi) => {
-  dispatch(logoutPending());
+  dispatch(logoutPending())
 
   return callApi({ url: tokensUrl, method: 'DELETE', useRefreshToken: true })
     .then(removeLocalTokens)
     .then(dispatch(logoutSuccess()))
     .then(dispatch(push('/rebelchat')))
-    .catch(err => dispatch(logoutFail(err)));
-};
+    .catch(err => {
+      removeLocalTokens() // always remove local tokens
+      dispatch(logoutFail(err))
+    })
+}
 
 const logoutPending = () => ({
   type: LOGOUT_PENDING
-});
+})
 
 const logoutSuccess = () => ({
   type: LOGOUT_SUCCESS,
   receivedAt: Date.now()
-});
+})
 
 const logoutFail = err => ({
   type: LOGOUT_FAIL,
   message: err,
   receivedAt: Date.now()
-});
+})

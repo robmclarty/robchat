@@ -1,5 +1,7 @@
 import {
-  ADD_MESSAGE,
+  SEND_MESSAGE,
+  RECEIVE_MESSAGE,
+  REFRESH_USER_LIST,
   LOAD_MESSAGES,
   LOAD_MESSAGES_PENDING,
   LOAD_MESSAGES_FAIL,
@@ -7,24 +9,25 @@ import {
 } from '../constants/ActionTypes'
 
 const initialState = {
-  list: [],
+  messages: [],
+  users: [],
   isFetching: false,
   isLoaded: false,
   fetchHistory: [],
   error: ''
 }
 
-const messages = (state = initialState, action) => {
+const chat = (state = initialState, action) => {
   switch (action.type) {
-  case ADD_MESSAGE:
+  case SEND_MESSAGE: RECEIVE_MESSAGE:
     return {
       ...state,
-      list: [...state.list, action.message]
+      messages: [...state.messages, action.message]
     }
   case LOAD_MESSAGES:
     return {
       ...state,
-      list: action.messages,
+      messages: action.messages,
       isFetching: false,
       isLoaded: true,
       fetchHistory: [
@@ -47,6 +50,11 @@ const messages = (state = initialState, action) => {
       isLoaded: false,
       error: action.error
     }
+  case REFRESH_USER_LIST:
+    return {
+      ...state,
+      users: action.users
+    }
   case LOGOUT_SUCCESS:
     return initialState
   default:
@@ -54,4 +62,4 @@ const messages = (state = initialState, action) => {
   }
 }
 
-export default messages
+export default chat

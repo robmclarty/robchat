@@ -123,9 +123,9 @@ const io = socketio()
 const initSocketConnection = socket => {
   io.sockets.emit('user:join', connectedUsers(io))
 
-  socket.on('chat:message', msg => {
+  socket.on('send:message', msg => {
     console.log('message: ', msg)
-    io.sockets.emit('chat:message', msg)
+    socket.broadcast.emit('receive:message', msg)
   })
 }
 

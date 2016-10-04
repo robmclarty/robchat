@@ -224,10 +224,10 @@ const callApi = state => {
 // and if it is expired, tries to refresh it before attempting the API call.
 // This assumes an implementation of JWTs on the auth server which uses both
 // an access-token and a refresh-token.
-const jwtApiMiddleware = ({ dispatch, getState }) => next => action => {
+const authMiddleware = ({ dispatch, getState }) => next => action => {
   return typeof action === 'function' ?
     action(dispatch, callApi(getState()), getState) :
     next(action);
 };
 
-export default jwtApiMiddleware;
+export default authMiddleware;
