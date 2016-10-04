@@ -16,6 +16,9 @@ import {
 const initialState = {
   isFetching: false,
   isAuthenticated: false,
+  username: '',
+  userId: '',
+  socketId: '',
   tokens: {
     accessToken: '',
     refreshToken: ''
@@ -39,6 +42,8 @@ const authReducer = (state = initialState, action) => {
       ...state,
       isFetching: false,
       isAuthenticated: true,
+      username: action.tokenPayload.username,
+      userId: action.tokenPayload.userId,
       tokens: {
         accessToken: action.accessToken,
         refreshToken: action.refreshToken
@@ -61,17 +66,7 @@ const authReducer = (state = initialState, action) => {
       isFetching: true
     };
   case LOGOUT_SUCCESS:
-    return {
-      ...state,
-      isFetching: false,
-      isAuthenticated: false,
-      tokens: {
-        accessToken: '',
-        refreshToken: ''
-      },
-      tokenPayload: {},
-      lastUpdated: action.receivedAt
-    };
+    return initialState
   case LOGOUT_FAIL:
     return {
       ...state,

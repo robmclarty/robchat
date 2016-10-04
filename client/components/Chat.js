@@ -11,15 +11,19 @@ const Chat = React.createClass({
   displayName: 'Chat',
 
   propTypes: {
-    host: PropTypes.string,
     isAuthenticated: PropTypes.bool,
-    accessToken: PropTypes.string
+    userId: PropTypes.string,
+    username: PropTypes.string,
+    socket: PropTypes.object
   },
 
   getDefaultProps: function () {
     return {
       isAuthenticated: false,
-      accessToken: ''
+      userId: '',
+      socketId: '',
+      username: '',
+      socket: {}
     }
   },
 
@@ -35,8 +39,8 @@ const Chat = React.createClass({
   // ```
   getInitialState: function () {
     return {
-      messages: [],
-      socket: {},
+      // messages: [],
+      // socket: {},
       users: [],
       shouldScrollToBottom: false
     }
@@ -45,20 +49,21 @@ const Chat = React.createClass({
   componentDidMount: function () {
     // If there is already an existing token (e.g., because the user navigated
     // away from this page and came back) re-initialize the socket connection.
-    if (this.props.accessToken && this.props.accessToken !== ' ')
+    if (this.props.socket &&
+        this.props.accessToken &&
+        this.props.accessToken !== ' ')
       this.initSocketConnection(this.props.accessToken)
   },
 
   componentWillUnmount: function () {
-    if (this.state.socket && typeof this.state.socket.close === 'function') {
-      console.log('closing socket connection')
-      this.state.socket.close()
-    }
+    if (this.state.socket && typeof this.state.socket.disconnect === 'function')
+      this.state.socket.disconnect()
   },
 
   componentWillReceiveProps: function (nextProps) {
     // Only do this once, when accessToken has been populated.
-    if (nextProps.accessToken !== this.props.accessToken &&
+    if (nextProps.socket &&
+        nextProps.accessToken !== this.props.accessToken &&
         this.props.accessToken === '')
       this.initSocketConnection(nextProps.accessToken)
   },
@@ -76,7 +81,8 @@ const Chat = React.createClass({
   },
 
   initSocketConnection: function (token) {
-    const socket = io.connect(this.props.host)
+    //const socket = io.connect(this.props.host)
+    const { socket } = this.props
 
     console.log('initiating socket connection')
 
@@ -86,9 +92,7 @@ const Chat = React.createClass({
       socket.on('authenticated', () => {
         console.log('socket authenticated successfully')
 
-        this.setState({ socket })
-
-        socket.on('chat:message', msg => this.onMessage(msg))
+        socket.on('chat:message', msg => this.props.addMessage(msg))
 
         socket.on('user:join', users => {
           this.setState({ users })
@@ -107,14 +111,14 @@ const Chat = React.createClass({
     })
   },
 
-  onMessage: function (msg) {
-    this.setState({
-      messages: [
-        ...this.state.messages,
-        msg
-      ]
-    })
-  },
+  // onMessage: function (msg) {
+  //   this.setState({
+  //     messages: [
+  //       ...this.state.messages,
+  //       msg
+  //     ]
+  //   })
+  // },
 
   onSubmit: function (e) {
     const msg = this.refs.msg.value
@@ -122,7 +126,8 @@ const Chat = React.createClass({
     e.preventDefault()
 
     // Send message to server.
-    this.state.socket.emit('chat:message', {
+    this.props.addMessage(msg)
+    this.props.socket.emit('chat:message', {
       body: msg,
       user: this.props.user
     })
@@ -136,16 +141,18 @@ const Chat = React.createClass({
   render: function () {
     return (
       <div className="chat" ref="container">
+        {/*
         <ul id="users" ref="users" className="chat-users">
             {this.state.users.map((user, index) => (
               <li key={index}>{ user.username }</li>
             ))}
         </ul>
+        */}
 
         <ul id="messages" ref="messages" className="chat-messages">
-          {this.state.messages.map((msg, index) => (
+          {this.props.messages.map((msg, index) => (
             <li key={index}>
-              <b>{ msg.user.username }</b>
+              {/*<b>{ msg.user.username }</b>*/}
               &nbsp;
               { msg.body }
             </li>

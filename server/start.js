@@ -12,4 +12,4 @@ const server = app.listen(app.get('port'), () => {
 })
 
 // Attach socket.io to http server
-io.attach(server)
+io.attach(server, { path: '/chat' })

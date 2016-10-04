@@ -19,7 +19,6 @@ const vendors = [
   'react-redux',
   'react-router',
   'react-router-redux',
-  'react-scroll',
   'redux',
   'socket.io-client'
 ]
@@ -52,13 +51,13 @@ gulp.task('build:app', function () {
     debug: true,
     fullPaths: false
   }
-  const babelifyOptions = {
+  const babelOptions = {
     presets: ['es2015', 'react'],
     plugins: ['babel-plugin-transform-object-rest-spread']
   }
   const stream = browserify(browserifyOptions)
     .transform(envify())
-    .transform(babelify.configure(babelifyOptions))
+    .transform(babelify.configure(babelOptions))
 
   vendors.forEach(vendor => stream.external(vendor))
 

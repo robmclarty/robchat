@@ -10,7 +10,6 @@ const cred = require('./cred')
 const config = require('../config/server')
 
 const app = express()
-const io = socketio()
 
 // Accept application/json
 app.use(bodyParser.json())
@@ -117,6 +116,9 @@ const removeSocketUser = (socketId) => {
 const connectedUsers = io => Object.keys(io.sockets.sockets).map(id => {
   return socketUsers[id]
 })
+
+const io = socketio()
+//const chat = io.of('/chat')
 
 const initSocketConnection = socket => {
   io.sockets.emit('user:join', connectedUsers(io))
