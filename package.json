@@ -1,6 +1,6 @@
 {
   "name": "rebelchat",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Secure chat with attitude that is kept safe from prying eyes.",
   "main": "server/index.js",
   "scripts": {
