@@ -35,8 +35,8 @@ const requireOwner = (req, res, next) =>
 // process which goes hand-in-hand with the above authentication routes.
 // Creating a user from the user_controller can then be reserved for different
 // purposes such as internal administration.
-// router.route('/registration')
-//   .post(postRegistration)
+router.route('/registration')
+  .post(postRegistration)
 
 // Only admins can create new users and list all users.
 router.route('/users')

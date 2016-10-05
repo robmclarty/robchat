@@ -2,6 +2,9 @@ import {
   SEND_MESSAGE,
   RECEIVE_MESSAGE,
   REFRESH_USER_LIST,
+  REMOVE_USER,
+  JOIN_CHANNEL,
+  LEAVE_CHANNEL,
   LOAD_MESSAGES,
   LOAD_MESSAGES_PENDING,
   LOAD_MESSAGES_FAIL,
@@ -11,6 +14,7 @@ import {
 const initialState = {
   messages: [],
   users: [],
+  channels: [],
   isFetching: false,
   isLoaded: false,
   fetchHistory: [],
@@ -19,7 +23,8 @@ const initialState = {
 
 const chat = (state = initialState, action) => {
   switch (action.type) {
-  case SEND_MESSAGE: RECEIVE_MESSAGE:
+  case SEND_MESSAGE:
+  case RECEIVE_MESSAGE:
     return {
       ...state,
       messages: [...state.messages, action.message]
@@ -54,6 +59,21 @@ const chat = (state = initialState, action) => {
     return {
       ...state,
       users: action.users
+    }
+  case REMOVE_USER:
+    return {
+      ...state,
+      users: state.users.filter(user => user.socketId === action.socketId)
+    }
+  case JOIN_CHANNEL:
+    return {
+      ...state,
+      channels: [...state.channels, action.channel]
+    }
+  case LEAVE_CHANNEL:
+    return {
+      ...state,
+      channels: state.channels.filter(channel => action.channel)
     }
   case LOGOUT_SUCCESS:
     return initialState

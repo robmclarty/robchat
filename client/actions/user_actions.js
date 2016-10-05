@@ -1,4 +1,3 @@
-import config from '../../config/client'
 import {
   UPDATE_USER,
   UPDATE_USER_PENDING,
@@ -9,6 +8,7 @@ import {
   STATUS_SUCCESS,
   STATUS_FAIL
 } from '../constants/FlashTypes'
+import config from '../../config/client'
 import { showFlash } from './'
 
 export const updateUser = profile => (dispatch, callApi) => {

@@ -11,8 +11,7 @@ const mapStateToProps = state => ({
   messages: state.chat.messages,
   isAuthenticated: state.auth.isAuthenticated,
   userId: state.auth.userId,
-  username: state.auth.username,
-  channel: 'lobby'
+  username: state.auth.username
 })
 
 const mapDispatchToProps = dispatch => ({

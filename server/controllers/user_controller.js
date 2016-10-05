@@ -23,38 +23,43 @@ const postUsers = (req, res, next) => {
 
 // Create a new user that is guaranteed to not be an admin. This is to be used
 // for public-facing signup/registration with the app.
-// const postRegistration = (req, res, next) => {
-//   const username = striptags(req.body.username)
-//   const email = striptags(req.body.email)
-//   const password = req.body.password
-//
-//   User.findOne({ email })
-//     .then(user => {
-//       if (user) throw createError({
-//         status: BAD_REQUEST,
-//         message: `The email your provided is already registered to an account.`
-//       })
-//
-//       const newUser = new User({
-//         username,
-//         email,
-//         password,
-//         isActive: true,
-//         isAdmin: false
-//       })
-//
-//       return newUser.save()
-//     })
-//     .then(user => {
-//       // TODO: verify email after signup is complete
-//       res.json({
-//         success: true,
-//         message: 'New account created successfully.',
-//         user
-//       })
-//     })
-//     .catch(next)
-// }
+const postRegistration = (req, res, next) => {
+  // next(createError({
+  //   status: BAD_REQUEST,
+  //   message: 'Registration is currently disabled.'
+  // }))
+
+  const username = striptags(req.body.username)
+  const email = striptags(req.body.email)
+  const password = req.body.password
+
+  User.findOne({ email })
+    .then(user => {
+      if (user) throw createError({
+        status: BAD_REQUEST,
+        message: `The email your provided is already registered to an account.`
+      })
+
+      const newUser = new User({
+        username,
+        email,
+        password,
+        isActive: true,
+        isAdmin: false
+      })
+
+      return newUser.save()
+    })
+    .then(user => {
+      // TODO: verify email after signup is complete
+      res.json({
+        success: true,
+        message: 'New account created successfully.',
+        user
+      })
+    })
+    .catch(next)
+}
 
 const getUsers = (req, res, next) => {
   User.find({})
@@ -146,7 +151,7 @@ const deleteUser = (req, res, next) => {
 
 module.exports = {
   postUsers,
-  //postRegistration,
+  postRegistration,
   getUsers,
   getUser,
   putUser,

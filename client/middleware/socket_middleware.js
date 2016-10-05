@@ -1,9 +1,15 @@
 import io from 'socket.io-client'
 import {
   receiveMessage,
-  refreshUserList
+  refreshUserList,
+  joinChannel,
+  leaveChannel,
+  removeUser
 } from '../actions'
-import { SEND_MESSAGE } from '../constants/ActionTypes'
+import {
+  SEND_MESSAGE,
+  CREATE_PRIVATE_CHAT
+} from '../constants/ActionTypes'
 import config from '../../config/client'
 
 let socket = null
@@ -11,18 +17,33 @@ let socket = null
 export const socketMiddleware = store => next => action => {
   const result = next(action)
 
-  if (socket && action.type === SEND_MESSAGE) {
-    console.log('send message to server: ', action.message)
-    socket.emit('send:message', action.message)
+  if (socket) {
+    switch(action.type) {
+    case SEND_MESSAGE:
+      socket.emit('send:message', action.message)
+    case CREATE_PRIVATE_CHAT:
+      socket.emit('create:private')
+    default:
+      // do nothing
+    }
   }
 
   return result
 }
 
 const initChatInterface = dispatch => {
-  socket.on('receive:message', msg => dispatch(receiveMessage(msg)))
-  socket.on('user:join', users => dispatch(refreshUserList(users)))
-  socket.on('user:leave', users => dispatch(refreshUserList(users)))
+  socket.on('receive:message', msg => {
+    console.log('received message: ', msg)
+    dispatch(receiveMessage(msg))
+  })
+  socket.on('join:channel', ({ channel, users }) => {
+    dispatch(joinChannel(channel))
+    dispatch(refreshUserList(users))
+  })
+  socket.on('user:disconnected', socketId => dispatch(removeUser(socketId)))
+  socket.on('create:private', users => {
+    dispatch(refreshUserList(users))
+  })
 }
 
 export const configureSockets = () => (dispatch, callApi, getState) => {
