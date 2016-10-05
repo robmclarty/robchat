@@ -1,31 +1,48 @@
 import {
   SEND_MESSAGE,
   RECEIVE_MESSAGE,
-  REFRESH_USER_LIST,
+  REFRESH_USERS,
+  ADD_USER,
   REMOVE_USER,
+  CHANGE_CHANNEL,
   JOIN_CHANNEL,
   LEAVE_CHANNEL
 } from '../constants/ActionTypes'
 import config from '../../config/client'
 
-export const sendMessage = msg => ({
+export const sendMessage = (channel, message) => ({
   type: SEND_MESSAGE,
-  message: msg
+  channel,
+  message
 })
 
-export const receiveMessage = msg => ({
+export const receiveMessage = (channel, message) => ({
   type: RECEIVE_MESSAGE,
-  message: msg
+  channel,
+  message
 })
 
-export const refreshUserList = users => ({
-  type: REFRESH_USER_LIST,
+export const refreshUsers = (channel, users) => ({
+  type: REFRESH_USERS,
+  channel,
   users
 })
 
-export const removeUser = socketId => ({
+export const addUser = (channel, user) => ({
   type: REMOVE_USER,
-  socketId
+  channel,
+  userId
+})
+
+export const removeUser = (channel, userId) => ({
+  type: REMOVE_USER,
+  channel,
+  userId
+})
+
+export const changeChannel = channel => ({
+  type: CHANGE_CHANNEL,
+  channel
 })
 
 export const joinChannel = channel => ({

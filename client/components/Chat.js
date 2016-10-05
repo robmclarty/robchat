@@ -51,7 +51,8 @@ const Chat = React.createClass({
       body: msg,
       channel: this.props.channel,
       userId: this.props.userId,
-      username: this.props.username
+      username: this.props.username,
+      createdAt: Date.now()
     })
 
     // Reset input for accepting new messages.

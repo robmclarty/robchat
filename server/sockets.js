@@ -62,11 +62,14 @@ const channelSockets = (io, channel) => {
 
 const attachSocketEvents = socket => {
   socket.on('send:message', msg => {
-    console.log('msg: ', msg)
-    socket.broadcast.to(msg.channel).emit('receive:message', msg)
+    socket.broadcast.to(msg.channel).emit('receive:message', {
+      channel: msg.channel,
+      message: msg
+    })
   })
 
-  socket.on('create:private', () => {
+  socket.on('create:private', socketId => {
+
   })
 }
 

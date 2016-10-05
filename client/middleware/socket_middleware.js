@@ -1,14 +1,23 @@
 import io from 'socket.io-client'
 import {
+  sendMessage,
   receiveMessage,
-  refreshUserList,
+  refreshUsers,
+  addUser,
+  removeUser,
+  changeChannel,
   joinChannel,
-  leaveChannel,
-  removeUser
+  leaveChannel
 } from '../actions'
 import {
   SEND_MESSAGE,
-  CREATE_PRIVATE_CHAT
+  RECEIVE_MESSAGE,
+  REFRESH_USERS,
+  ADD_USER,
+  REMOVE_USER,
+  CHANGE_CHANNEL,
+  JOIN_CHANNEL,
+  LEAVE_CHANNEL
 } from '../constants/ActionTypes'
 import config from '../../config/client'
 
@@ -21,8 +30,8 @@ export const socketMiddleware = store => next => action => {
     switch(action.type) {
     case SEND_MESSAGE:
       socket.emit('send:message', action.message)
-    case CREATE_PRIVATE_CHAT:
-      socket.emit('create:private')
+    // case CREATE_PRIVATE_CHAT:
+    //   socket.emit('create:private')
     default:
       // do nothing
     }
@@ -32,17 +41,22 @@ export const socketMiddleware = store => next => action => {
 }
 
 const initChatInterface = dispatch => {
-  socket.on('receive:message', msg => {
-    console.log('received message: ', msg)
-    dispatch(receiveMessage(msg))
+  socket.on('receive:message', ({ channel, message }) => {
+    dispatch(receiveMessage(channel, message))
   })
   socket.on('join:channel', ({ channel, users }) => {
     dispatch(joinChannel(channel))
-    dispatch(refreshUserList(users))
+    dispatch(changeChannel(channel))
+    dispatch(refreshUsers(channel, users))
   })
-  socket.on('user:disconnected', socketId => dispatch(removeUser(socketId)))
-  socket.on('create:private', users => {
-    dispatch(refreshUserList(users))
+  socket.on('user:join:channel', ({ channel, user }) => {
+    dispatch(addUser(channel, user))
+  })
+  socket.on('user:disconnected', ({ channel, userId }) => {
+    dispatch(removeUser(channel, userId))
+  })
+  socket.on('create:private', ({ channel, users }) => {
+    dispatch(refreshUsers(channel, users))
   })
 }
 
@@ -62,7 +76,6 @@ export const configureSockets = () => (dispatch, callApi, getState) => {
     socket.on('unauthorized', msg => {
       console.log('unauthorized socket connection')
       socket.disconnect()
-      //dispatch(disconnect())
     })
   })
 }
