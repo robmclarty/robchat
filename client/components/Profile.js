@@ -32,7 +32,7 @@ const Profile = React.createClass({
   onSubmitProfile: function (e) {
     const profile = {
       id: this.props.profile.id,
-      userId: this.props.userId,
+      userId: this.props.user.id,
       fullName: this.refs.fullName.value,
       country: this.refs.country.value,
       website: this.refs.website.value,

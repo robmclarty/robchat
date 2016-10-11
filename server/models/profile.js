@@ -73,11 +73,11 @@ const ProfileSchema = function (sequelize, DataTypes) {
 
     website: {
       type: DataTypes.STRING,
-      validate: {
-        isUrl: {
-          msg: 'Must be valid URL.'
-        }
-      }
+      // validate: {
+      //   isUrl: {
+      //     msg: 'Must be valid URL.'
+      //   }
+      // }
     },
     twitter: { type: DataTypes.STRING }
   },
@@ -89,7 +89,8 @@ const ProfileSchema = function (sequelize, DataTypes) {
     tableName: 'Profiles',
     getterMethods: {
       fullName: function () {
-        return `${ this.firstName } ${ this.lastName }`
+        const noSpace = !this.firstName || !this.lastName
+        return `${ this.firstName || '' }${ noSpace ? '' : ' ' }${ this.lastName || '' }`
       }
     },
     setterMethods: {

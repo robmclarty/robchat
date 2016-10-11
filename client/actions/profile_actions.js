@@ -27,7 +27,7 @@ export const fetchProfile = userId => (dispatch, callApi) => {
     url: `${ profilesUrl }/${ userId }`,
     method: 'GET'
   })
-    .then(res => dispatch(storeProfile(res.user)))
+    .then(res => dispatch(storeProfile(res.profile)))
     .then(() => dispatch(fetchProfileSuccess()))
     .then(() => dispatch(hideFlash('profile')))
     .catch(err => dispatch(fetchProfileFail(err)))

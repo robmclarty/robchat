@@ -60,8 +60,6 @@ return ({
 export const updateUser = user => (dispatch, callApi) => {
   dispatch(updateUserPending())
 
-  console.log('user: ', user)
-
   return callApi({
     url: `${ usersUrl }/${ user.id }`,
     method: 'PUT',
@@ -74,7 +72,6 @@ export const updateUser = user => (dispatch, callApi) => {
       messages: ['Login credentials updated']
     })))
     .catch(err => {
-      console.log('errors: ', err)
       dispatch(updateUserFail(err))
       dispatch(showFlash({
         status: STATUS_ERROR,

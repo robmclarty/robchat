@@ -55,7 +55,6 @@ const getProfile = (req, res, next) => {
 
   Profile.findOne({ where: { userId } })
     .then(profile => {
-      console.log('missing profile? ', !profile)
       return !profile ?
         Profile.create({ userId }) :
         profile
