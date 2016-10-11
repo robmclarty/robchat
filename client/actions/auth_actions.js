@@ -23,7 +23,8 @@ import {
   showFlash,
   hideFlash,
   fetchRelationships,
-  fetchProfile
+  fetchProfile,
+  fetchUser
 } from './'
 
 const tokensUrl = `${ config.authRoot }/tokens`
@@ -36,9 +37,12 @@ const startup = (dispatch, state) => {
       status: STATUS_PENDING,
       messages: ['Loading resources...']
     })))
-    .then(() => dispatch(configureSockets()))
-    //.then(() => dispatch(fetchProfile(userId)))
-    //.then(() => dispatch(fetchRelationships(userId)))
+    .then(() => {
+      dispatch(configureSockets())
+      dispatch(fetchProfile(userId))
+      dispatch(fetchUser(userId))
+      //dispatch(fetchRelationships(userId))
+    })
     .then(() => dispatch(hideFlash()))
 }
 

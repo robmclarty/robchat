@@ -1,9 +1,11 @@
 import {
   STORE_PROFILE,
-  FETCH_PROFILE_PENDING,
   FETCH_PROFILE_SUCCESS,
+  FETCH_PROFILE_PENDING,
   FETCH_PROFILE_FAIL,
-  UPDATE_USER
+  UPDATE_PROFILE,
+  UPDATE_PROFILE_PENDING,
+  UPDATE_PROFILE_FAIL
 } from '../constants/ActionTypes';
 import fetchable from '../transducers/fetchable';
 
@@ -17,12 +19,12 @@ const profile = (state = defaultState, action) => {
   case STORE_PROFILE:
     return {
       ...state,
-      ...action.user
+      ...action.profile
     }
-  case UPDATE_USER:
+  case UPDATE_PROFILE:
     return {
       ...state,
-      ...action.user
+      ...action.profile
     }
   default:
     return state

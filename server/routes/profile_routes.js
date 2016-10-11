@@ -19,7 +19,7 @@ router.route('/profiles')
   .get(requireReadProfiles, getProfiles)
 
 // Users can only get and change data for themselves, not any other users.
-router.route('/profiles/:id')
+router.route('/profiles/:userId')
   .get(requireReadProfiles, getProfile)
   .put(requireWriteProfiles, putProfile)
   .delete(requireWriteProfiles, deleteProfile)

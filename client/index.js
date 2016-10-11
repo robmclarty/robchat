@@ -33,12 +33,17 @@ render(
     <Router history={history}>
       <Route path="/app" component={App}>
         <IndexRoute component={Login} />
-        <Route path="login" component={Login} onEnter={resetFlashOnEnter} />
-        <Route path="profile" component={Profile} onEnter={resetFlashOnEnter} />
-        <Route path="register" component={Register} onEnter={resetFlashOnEnter} />
+
         <Route path="chat" component={Chat} onEnter={resetFlashOnEnter} />
         <Route path="private" component={PrivateChat} onEnter={resetFlashOnEnter} />
+
+        <Route path="profile" component={Profile} onEnter={resetFlashOnEnter} />
+
         <Route path="friends" component={FriendControls} onEnter={resetFlashOnEnter} />
+
+        <Route path="login" component={Login} onEnter={resetFlashOnEnter} />
+        <Route path="register" component={Register} onEnter={resetFlashOnEnter} />
+
         <Route path="*" component={NotFound} />
       </Route>
     </Router>
