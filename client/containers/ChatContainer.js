@@ -14,7 +14,7 @@ const mapStateToProps = state => {
     users: channelLoaded ? state.chat.channels[channel].users : [],
     messages: channelLoaded ? state.chat.channels[channel].messages : [],
     isAuthenticated: state.auth.isAuthenticated,
-    userId: state.auth.userId,
+    userId: Number(state.auth.userId),
     username: state.auth.username,
     channel
   }

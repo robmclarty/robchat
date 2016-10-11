@@ -15,7 +15,7 @@ const Header = ({
     <nav className="site-nav">
       <button onClick={onClickUsername}>{username}</button>
       <button onClick={onClickChat}>Chat</button>
-      <button onClick={onClickFriends}>Friends</button>
+      {/*<button onClick={onClickFriends}>Friends</button>*/}
       <button onClick={onClickLogout}>Logout</button>
     </nav>
   );

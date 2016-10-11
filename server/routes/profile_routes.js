@@ -7,8 +7,8 @@ const {
   getUser,
   putUser,
   deleteUser,
-  postRegistration
-} = require('../controllers/user_controller')
+  postRegister
+} = require('../controllers/profile_controller')
 const cred = require('../cred')
 
 const isAdmin = req =>
@@ -35,17 +35,17 @@ const requireOwner = (req, res, next) =>
 // process which goes hand-in-hand with the above authentication routes.
 // Creating a user from the user_controller can then be reserved for different
 // purposes such as internal administration.
-router.route('/registration')
-  .post(postRegistration)
+router.route('/register')
+  .post(postRegister)
 
 // Only admins can create new users and list all users.
-router.route('/users')
+router.route('/profiles')
   .all([cred.requireAccessToken, requireAdmin])
   .post(postUsers)
   .get(getUsers)
 
 // Users can only get and change data for themselves, not any other users.
-router.route('/users/:id')
+router.route('/profiles/:id')
   .all(cred.requireAccessToken)
   .get(requireOwner, getUser)
   .put(requireOwner, putUser)

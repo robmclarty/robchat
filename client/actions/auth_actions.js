@@ -37,8 +37,8 @@ const startup = (dispatch, state) => {
       messages: ['Loading resources...']
     })))
     .then(() => dispatch(configureSockets()))
-    .then(() => dispatch(fetchProfile(userId)))
-    .then(() => dispatch(fetchRelationships(userId)))
+    //.then(() => dispatch(fetchProfile(userId)))
+    //.then(() => dispatch(fetchRelationships(userId)))
     .then(() => dispatch(hideFlash()))
 }
 

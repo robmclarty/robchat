@@ -12,7 +12,7 @@
       "ASSETS_PATH": "/srv/opt/chat",
       "NODE_ENV": "production",
       "DATABASE": "mongodb://localhost:27017/robchat",
-      "JWT_ISSUER": "rebelchat",
+      "JWT_ISSUER": "cred-auth-manager",
       "ACCESS_PRIVATE_KEY": "....",
       "ACCESS_PUBLIC_KEY": "....",
       "ACCESS_EXPIRES_IN": "24 days",

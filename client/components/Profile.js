@@ -4,7 +4,7 @@ const Profile = React.createClass({
   displayName: 'Profile',
 
   propTypes: {
-    userId: PropTypes.string,
+    userId: PropTypes.number,
     username: PropTypes.string,
     email: PropTypes.string,
     isFetching: PropTypes.bool,

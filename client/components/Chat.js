@@ -5,7 +5,7 @@ const Chat = React.createClass({
 
   propTypes: {
     isAuthenticated: PropTypes.bool,
-    userId: PropTypes.string,
+    userId: PropTypes.number,
     username: PropTypes.string,
     messages: PropTypes.array,
     users: PropTypes.array,
@@ -15,7 +15,7 @@ const Chat = React.createClass({
   getDefaultProps: function () {
     return {
       isAuthenticated: false,
-      userId: '',
+      userId: 0,
       username: '',
       messages: [],
       users: [],

@@ -121,7 +121,7 @@ const FriendControls = ({
 )
 
 FriendControls.propTypes = {
-  userId: PropTypes.string,
+  userId: PropTypes.number,
   friends: PropTypes.array,
   requests: PropTypes.array,
   pending: PropTypes.array,

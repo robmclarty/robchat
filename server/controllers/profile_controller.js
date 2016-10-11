@@ -23,7 +23,7 @@ const postUsers = (req, res, next) => {
 
 // Create a new user that is guaranteed to not be an admin. This is to be used
 // for public-facing signup/registration with the app.
-const postRegistration = (req, res, next) => {
+const postRegister = (req, res, next) => {
   // next(createError({
   //   status: BAD_REQUEST,
   //   message: 'Registration is currently disabled.'
@@ -151,7 +151,7 @@ const deleteUser = (req, res, next) => {
 
 module.exports = {
   postUsers,
-  postRegistration,
+  postRegister,
   getUsers,
   getUser,
   putUser,

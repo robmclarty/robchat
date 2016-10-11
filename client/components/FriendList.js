@@ -27,7 +27,7 @@ const FriendList = ({ userId, friends, heading, onClickFriend }) => (
 )
 
 List.propTypes = {
-  id: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   list: PropTypes.array,
   onClickFriend: PropTypes.func,
   children: PropTypes.element
