@@ -15,6 +15,7 @@ const cred = require('../cred')
 const getRelationships = (req, res, next) => {
   Friendship.getRelationships(req.params.id)
     .then(relationships => res.json({
+      ok: true,
       message: 'Relationships found.',
       relationships
     }))
@@ -25,6 +26,7 @@ const getRelationships = (req, res, next) => {
 const getFriends = (req, res, next) => {
   Friendship.getFriends(res.params.id)
     .then(users => res.json({
+      ok: true,
       message: 'Friends found.',
       users
     }))
@@ -51,6 +53,7 @@ const getFriend = (req, res, next) => {
       return friendship.userId
     })
     .then(user => res.json({
+      ok: true,
       message: 'Found friend.',
       user
     }))
@@ -102,6 +105,7 @@ const requestFriendship = (req, res, next) => {
       const friendship = results[1];
 
       res.json({
+        ok: true,
         message: 'Friend request sent.',
         friend: Object.assign({}, target, {
           requestedAt: friendship.requestedAt
@@ -120,6 +124,7 @@ const acceptFriendship = (req, res, next) => {
 
   Friendship.accept(accepterId, requesterId)
     .then(friendships => res.json({
+      ok: true,
       message: 'Friendship accepted'
     }))
     .catch(next)
@@ -132,6 +137,7 @@ const declineFriendship = (req, res, next) => {
 
   Friendship.decline(declinerId, friendId)
     .then(friendships => res.json({
+      ok: true,
       message: 'Friendship declined.'
     }))
     .catch(next)
@@ -144,6 +150,7 @@ const banFriendship = (req, res, next) => {
 
   Friendship.ban(bannerId, friendId)
     .then(friendships => res.json({
+      ok: true,
       message: 'Friendship banned.'
     }))
     .catch(next)
@@ -159,6 +166,7 @@ const removeBan = (req, res, next) => {
 
   Friendship.decline(declinerId, friendId)
     .then(friendships => res.json({
+      ok: true,
       message: 'Friendship declined.'
     }))
     .catch(next)

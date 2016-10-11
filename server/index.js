@@ -36,10 +36,10 @@ mongoose.connection.on('disconnected', () => console.log('Disconnected from Mong
 const publicRoutes = require('./routes/public_routes')
 const profileRoutes = require('./routes/profile_routes')
 const friendRoutes = require('./routes/friend_routes')
-const authRoutes = require('./routes/auth_routes')
 
 app.use('/', [
-  authRoutes,
+  cred.requireAccessToken,
+  cred.requireProp('isActive', true),
   profileRoutes,
   friendRoutes,
   publicRoutes

@@ -5,7 +5,7 @@ const { createError, BAD_REQUEST } = require('../helpers/error_helper')
 const User = require('../models/user')
 const cred = require('../cred')
 
-const postUsers = (req, res, next) => {
+const postProfiles = (req, res, next) => {
   const user = User.updatedUser({
     auth: req[cred.key].payload,
     targetUser: new User(),
@@ -14,64 +14,24 @@ const postUsers = (req, res, next) => {
 
   user.save()
     .then(res.json({
-      success: true,
+      ok: true,
       message: 'User created.',
       user: newUser
     }))
     .catch(next)
 }
 
-// Create a new user that is guaranteed to not be an admin. This is to be used
-// for public-facing signup/registration with the app.
-const postRegister = (req, res, next) => {
-  // next(createError({
-  //   status: BAD_REQUEST,
-  //   message: 'Registration is currently disabled.'
-  // }))
-
-  const username = striptags(req.body.username)
-  const email = striptags(req.body.email)
-  const password = req.body.password
-
-  User.findOne({ email })
-    .then(user => {
-      if (user) throw createError({
-        status: BAD_REQUEST,
-        message: `The email your provided is already registered to an account.`
-      })
-
-      const newUser = new User({
-        username,
-        email,
-        password,
-        isActive: true,
-        isAdmin: false
-      })
-
-      return newUser.save()
-    })
-    .then(user => {
-      // TODO: verify email after signup is complete
-      res.json({
-        success: true,
-        message: 'New account created successfully.',
-        user
-      })
-    })
-    .catch(next)
-}
-
-const getUsers = (req, res, next) => {
+const getProfiles = (req, res, next) => {
   User.find({})
     .then(users => res.json({
-      success: true,
+      ok: true,
       message: 'Users found.',
       users
     }))
     .catch(next)
 }
 
-const getUser = (req, res, next) => {
+const getProfile = (req, res, next) => {
   req.checkParams('id', 'Not a valid user id').isMongoId()
 
   User.findById(req.params.id)
@@ -86,7 +46,7 @@ const getUser = (req, res, next) => {
       })
 
       res.json({
-        success: true,
+        ok: true,
         message: 'User found.',
         user
       })
@@ -96,7 +56,7 @@ const getUser = (req, res, next) => {
 
 // Only allow updating of specific fields, check for their existence explicitly,
 // and strip any html tags from String fields to mitigate XSS attacks.
-const putUser = (req, res, next) => {
+const putProfile = (req, res, next) => {
   req.checkParams('id', 'Not a valid user id').isMongoId()
   req.sanitizeBody().escape()
 
@@ -123,14 +83,14 @@ const putUser = (req, res, next) => {
       return user.save()
     })
     .then(user => res.json({
-      success: true,
+      ok: true,
       message: 'User updated.',
       user
     }))
     .catch(next)
 }
 
-const deleteUser = (req, res, next) => {
+const deleteProfile = (req, res, next) => {
   req.checkParams('id', 'Not a valid user id').isMongoId()
 
   User.findByIdAndRemove(req.params.id)
@@ -141,7 +101,7 @@ const deleteUser = (req, res, next) => {
       })
 
       res.json({
-        success: true,
+        ok: true,
         message: 'User deleted.',
         user
       })
@@ -150,10 +110,9 @@ const deleteUser = (req, res, next) => {
 }
 
 module.exports = {
-  postUsers,
-  postRegister,
-  getUsers,
-  getUser,
-  putUser,
-  deleteUser
+  postProfiles,
+  getProfiles,
+  getProfile,
+  putProfile,
+  deleteProfile
 }

@@ -12,29 +12,28 @@ const {
   banFriendship,
   removeBan
 } = require('../controllers/friend_controller')
-const cred = require('../cred')
+const {
+  requireReadFriends,
+  requireWriteFriends
+} = require('../middleware/auth_middleware')
 
 router.route('/users/:id/relationships')
-  .all(cred.requireAccessToken)
-  .get(getRelationships)
+  .get(requireReadFriends, getRelationships)
 
 router.route('/users/:id/friends')
-  .all(cred.requireAccessToken)
-  .get(getFriends)
-  .post(requestFriendship)
+  .get(requireReadFriends, getFriends)
+  .post(requireWriteFriends, requestFriendship)
 
 // Most-used friendship actions.
 router.route('/users/:user_id/friends/:id')
-  .all(cred.requireAccessToken)
-  .get(getFriend)
-  .put(acceptFriendship)
-  .delete(declineFriendship)
+  .get(requireReadFriends, getFriend)
+  .put(requireWriteFriends, acceptFriendship)
+  .delete(requireWriteFriends, declineFriendship)
 
 // Special friendship action to ban all future friendships.
 router.route('/users/:user_id/friends/:id/ban')
-  .all(cred.requireAccessToken)
-  .post(banFriendship)
-  .delete(removeBan)
+  .post(requireWriteFriends, banFriendship)
+  .delete(requireWriteFriends, removeBan)
 
 //
 // router.route('/users/:user_id/favorites/:id')

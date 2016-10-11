@@ -4,7 +4,7 @@ const router = require('express').Router()
 
 // Homepage
 router.route('/')
-  .get((req, res) => res.json({ message: 'Welcome to Rebel Chat!' }))
+  .get((req, res) => res.json({ message: 'Welcome to robchat!' }))
 
 // App
 router.route('/app*')

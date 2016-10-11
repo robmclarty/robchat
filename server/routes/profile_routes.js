@@ -2,53 +2,26 @@
 
 const router = require('express').Router()
 const {
-  postUsers,
-  getUsers,
-  getUser,
-  putUser,
-  deleteUser,
-  postRegister
+  postProfiles,
+  getProfiles,
+  getProfile,
+  putProfile,
+  deleteProfile
 } = require('../controllers/profile_controller')
-const cred = require('../cred')
-
-const isAdmin = req =>
-  req.cred &&
-  req.cred.payload &&
-  req.cred.payload.isAdmin
-
-const requireAdmin = (req, res, next) => isAdmin(req) ?
-  next() :
-  next('Unauthorized')
-
-const requireOwner = (req, res, next) =>
-  req.cred &&
-  req.cred.payload &&
-  req.params &&
-  req.params.id &&
-  (req.cred.payload.userId === req.params.id || req.cred.payload.isAdmin) ?
-    next() :
-    next('Unauthorized')
-
-// Use "registration" resource to handle signups. This is separate from creating
-// a "user" resource from the user_controller in that it is public-facing and
-// can be made more limited. It is to be used as part of a signup/registration
-// process which goes hand-in-hand with the above authentication routes.
-// Creating a user from the user_controller can then be reserved for different
-// purposes such as internal administration.
-router.route('/register')
-  .post(postRegister)
+const {
+  requireReadProfiles,
+  requireWriteProfiles
+} = require('../middleware/auth_middleware')
 
 // Only admins can create new users and list all users.
 router.route('/profiles')
-  .all([cred.requireAccessToken, requireAdmin])
-  .post(postUsers)
-  .get(getUsers)
+  .post(requireWriteProfiles, postProfiles)
+  .get(requireReadProfiles, getProfiles)
 
 // Users can only get and change data for themselves, not any other users.
 router.route('/profiles/:id')
-  .all(cred.requireAccessToken)
-  .get(requireOwner, getUser)
-  .put(requireOwner, putUser)
-  .delete(requireAdmin, deleteUser)
+  .get(requireReadProfiles, getProfile)
+  .put(requireWriteProfiles, putProfile)
+  .delete(requireWriteProfiles, deleteProfile)
 
 module.exports = router
