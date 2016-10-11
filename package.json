@@ -1,5 +1,5 @@
 {
-  "name": "rebelchat",
+  "name": "robchat",
   "version": "0.0.4",
   "description": "Secure chat with attitude that is kept safe from prying eyes.",
   "main": "server/index.js",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/robmclarty/rebelchat.git"
+    "url": "git+ssh://git@github.com/robmclarty/robchat.git"
   },
   "keywords": [
     "chat",

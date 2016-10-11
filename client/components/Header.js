@@ -30,9 +30,9 @@ const Header = ({
   return (
     <header className="global-header">
       <h1 className="site-name">
-        <Link to="/rebelchat/">
-          <img src="/favicon-32x32.png" width="32" height="32" />
-          <span><b>Rebel Chat</b></span>
+        <Link to="/app">
+          <img src="/images/telling-secrets.jpg" width="59" height="36" />
+          <span><b>robchat</b></span>
         </Link>
       </h1>
 

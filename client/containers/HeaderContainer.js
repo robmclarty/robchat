@@ -23,12 +23,12 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onClickUsername: () => dispatch(push('/rebelchat/profile')),
-  onClickChat: () => dispatch(push('/rebelchat/chat')),
-  onClickFriends: () => dispatch(push('/rebelchat/friends')),
-  onClickLogin: () => dispatch(push('/rebelchat/login')),
+  onClickUsername: () => dispatch(push('/app/profile')),
+  onClickChat: () => dispatch(push('/app/chat')),
+  onClickFriends: () => dispatch(push('/app/friends')),
+  onClickLogin: () => dispatch(push('/app/login')),
   onClickLogout: () => dispatch(logout()),
-  onClickSignup: () => dispatch(push('/rebelchat/register')),
+  onClickSignup: () => dispatch(push('/app/register')),
   onChangeFilter: filter => dispatch(changeFilter(filter))
   //onSelectResource: (type) => dispatch(fetchLocations(type))
 });

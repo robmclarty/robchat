@@ -7,7 +7,7 @@ router.route('/')
   .get((req, res) => res.json({ message: 'Welcome to Rebel Chat!' }))
 
 // App
-router.route('/rebelchat*')
-  .get((req, res) => res.sendFile('index.html', { root: './build/rebelchat' }))
+router.route('/app*')
+  .get((req, res) => res.sendFile('index.html', { root: './build/app' }))
 
 module.exports = router

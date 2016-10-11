@@ -41,7 +41,7 @@ const requireAuthentication = function (Component) {
   });
 
   const mapDispatchToProps = dispatch => ({
-    redirectToLogin: () => dispatch(push(`/login`))
+    redirectToLogin: () => dispatch(push(`/app/login`))
   });
 
   return connect(

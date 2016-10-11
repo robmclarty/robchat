@@ -9,7 +9,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  onSubmit: creds => dispatch(login(creds)).then(dispatch(push(`/rebelchat/chat`)))
+  onSubmit: creds => dispatch(login(creds)).then(dispatch(push(`/app/chat`)))
 });
 
 const LoginContainer = connect(

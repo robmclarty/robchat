@@ -16,7 +16,7 @@ const mapDispatchToProps = dispatch => ({
       status: STATUS_SUCCESS,
       messages: ['Registration Complete']
     })))
-    .then(dispatch(push(`/rebelchat/login`)))
+    .then(dispatch(push(`/app/login`)))
 });
 
 const RegisterContainer = connect(

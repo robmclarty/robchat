@@ -31,7 +31,7 @@ const resetFlashOnEnter = () => store.dispatch(resetFlash())
 render(
   <Provider store={store}>
     <Router history={history}>
-      <Route path="/rebelchat" component={App}>
+      <Route path="/app" component={App}>
         <IndexRoute component={Login} />
         <Route path="login" component={Login} onEnter={resetFlashOnEnter} />
         <Route path="profile" component={Profile} onEnter={resetFlashOnEnter} />
@@ -43,5 +43,5 @@ render(
       </Route>
     </Router>
   </Provider>,
-  document.getElementById('rebelchat-app')
+  document.getElementById('robchat-app')
 )

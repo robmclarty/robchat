@@ -151,7 +151,7 @@ export const logout = () => (dispatch, callApi) => {
   return callApi({ url: tokensUrl, method: 'DELETE', useRefreshToken: true })
     .then(removeLocalTokens)
     .then(dispatch(logoutSuccess()))
-    .then(dispatch(push('/rebelchat')))
+    .then(dispatch(push('/app')))
     .catch(err => {
       removeLocalTokens() // always remove local tokens
       dispatch(logoutFail(err))

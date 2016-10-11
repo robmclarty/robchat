@@ -23,6 +23,8 @@ const FriendControls = ({
     {friends.length === 0 &&
       <div>
         You have no friends. What a sad, sorry, soul you are.
+        <br />
+        <br />
       </div>
     }
 
