@@ -49,7 +49,7 @@ export const register = creds => (dispatch, callApi) => {
   dispatch(registerPending())
 
   return callApi({
-    url: `${ config.authRoot }/registration`,
+    url: `${ config.authRoot }/register`,
     method: 'POST',
     body: creds,
     requireAuth: false

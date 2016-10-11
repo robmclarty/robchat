@@ -21,7 +21,7 @@ export const fetchRelationships = userId => (dispatch, callApi) => {
   dispatch(fetchRelationshipsPending())
 
   return callApi({
-    url: `${ config.authRoot }/users/${ userId }/relationships`,
+    url: `${ config.chatRoot }/users/${ userId }/relationships`,
     method: 'GET'
   })
     .then(json => dispatch(storeRelationships(json.relationships)))
@@ -55,7 +55,7 @@ export const requestFriendship = (userId, username) => (dispatch, callApi) => {
   //dispatch(requestFriendshipPending())
 
   return callApi({
-    url: `${ config.authRoot }/users/${ userId }/friends`,
+    url: `${ config.chatRoot }/users/${ userId }/friends`,
     method: 'POST',
     body: { username }
   })
@@ -89,7 +89,7 @@ const requestFriendshipFail = error => ({
 // -----------------
 export const acceptFriendship = (userId, friendId) => (dispatch, callApi) => {
   return callApi({
-    url: `${ config.authRoot }/users/${ userId }/friends/${ friendId }`,
+    url: `${ config.chatRoot }/users/${ userId }/friends/${ friendId }`,
     method: 'PUT'
   })
     .then(() => dispatch(showFlash({
@@ -108,7 +108,7 @@ export const acceptFriendship = (userId, friendId) => (dispatch, callApi) => {
 // ------------------
 export const declineFriendship = (userId, friendId) => (dispatch, callApi) => {
   return callApi({
-    url: `${ config.authRoot }/users/${ userId }/friends/${ friendId }`,
+    url: `${ config.chatRoot }/users/${ userId }/friends/${ friendId }`,
     method: 'DELETE'
   })
     .then(() => dispatch(showFlash({

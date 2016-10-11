@@ -1,5 +1,5 @@
 {
   "appName": "rebelchat",
-  "authRoot": "http://chat.robmclarty.com",
-  "socketUrl": "http://chat.robmclarty.com"
+  "authRoot": "http://auth.robmclarty.com",
+  "chatRoot": "http://chat.robmclarty.com"
 }

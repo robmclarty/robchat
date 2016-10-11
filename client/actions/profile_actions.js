@@ -12,7 +12,7 @@ export const fetchProfile = userId => (dispatch, callApi) => {
   dispatch(fetchProfilePending())
 
   return callApi({
-    url: `${ config.authRoot }/users/${ userId }`,
+    url: `${ config.chatRoot }/profiles/${ userId }`,
     method: 'GET'
   })
     .then(json => dispatch(storeProfile(json.user)))

@@ -1,6 +1,6 @@
 [
   {
-    "name": "rebelchat",
+    "name": "robchat",
     "cwd": "/opt/chat",
     "script": "server/start.js",
     "max_memory_restart": "350M",
@@ -11,7 +11,7 @@
       "APP_NAME": "rebelchat",
       "ASSETS_PATH": "/srv/opt/chat",
       "NODE_ENV": "production",
-      "DATABASE": "mongodb://localhost:27017/rebelchat",
+      "DATABASE": "mongodb://localhost:27017/robchat",
       "JWT_ISSUER": "rebelchat",
       "ACCESS_PRIVATE_KEY": "....",
       "ACCESS_PUBLIC_KEY": "....",

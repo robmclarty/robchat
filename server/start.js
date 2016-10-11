@@ -4,7 +4,7 @@
 
 const { app, io } = require('../server')
 
-app.set('port', process.env.PORT || 3000)
+app.set('port', process.env.PORT || 3001)
 
 // Start the server
 const server = app.listen(app.get('port'), () => {

@@ -1,8 +1,8 @@
 'use strict'
 
 module.exports = {
-  appName: process.env.APP_NAME || 'rebel-chat',
-  issuer: process.env.JWT_ISSUER || 'rebel-chat',
+  appName: process.env.APP_NAME || 'robchat',
+  issuer: process.env.JWT_ISSUER || 'robchat',
   database: process.env.DATABASE || 'mongodb://localhost:27017/rebelchat',
   access: {
     privateKeyPath: process.env.ACCESS_PRIVATE_KEY || './config/private-sample.pem',
