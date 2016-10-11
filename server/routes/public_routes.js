@@ -6,6 +6,9 @@ const router = require('express').Router()
 router.route('/')
   .get((req, res) => res.json({ message: 'Welcome to robchat!' }))
 
+router.route('/register')
+  .post(postRegister)
+
 // App
 router.route('/app*')
   .get((req, res) => res.sendFile('index.html', { root: './build/app' }))

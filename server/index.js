@@ -46,24 +46,18 @@ app.use('/', [
 ])
 
 // API Errors
-const {
-  unauthorized,
-  forbidden,
-  badRequest,
-  unprocessable,
-  notFound,
-  genericError,
-  pageNotFound
-} = require('./middleware/error_middleware')
+const errorHandler = require('./middleware/error_middleware')
 
 app.use([
-  unauthorized,
-  forbidden,
-  badRequest,
-  unprocessable,
-  notFound,
-  genericError,
-  pageNotFound
+  errorHandler.sequelizeError,
+  errorHandler.unauthorized,
+  errorHandler.forbidden,
+  errorHandler.conflict,
+  errorHandler.badRequest,
+  errorHandler.unprocessable,
+  errorHandler.notFound,
+  errorHandler.genericError,
+  errorHandler.catchall
 ])
 
 // Initialize Sockets

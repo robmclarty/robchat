@@ -36,7 +36,7 @@ const unauthorized = (error, req, res, next) => {
 
   res.status(UNAUTHORIZED).send({
     ok: false,
-    message: error.message || 'Unauthorized.',
+    message: error.message || 'Unauthorized',
     error
   })
 }
@@ -46,8 +46,18 @@ const forbidden = (error, req, res, next) => {
 
   res.status(FORBIDDEN).send({
     ok: false,
-    message: error.message || 'Forbidden.',
+    message: error.message || 'Forbidden',
     error
+  })
+}
+
+const conflict = (err, req, res, next) => {
+  if (err.status !== CONFLICT) return next(err)
+
+  res.status(CONFLICT).send({
+    ok: false,
+    message: err.message || 'Conflict',
+    errors: [err]
   })
 }
 
@@ -66,7 +76,7 @@ const unprocessable = (error, req, res, next) => {
 
   res.status(UNPROCESSABLE).send({
     ok: false,
-    message: error.message || 'Unprocessable entity.',
+    message: error.message || 'Unprocessable entity',
     error
   })
 }
@@ -86,26 +96,28 @@ const notFound = (err, req, res, next) => {
 const genericError = (error, req, res, next) => {
   res.status(GENERIC_ERROR).send({
     ok: false,
-    message: error.message || 'Internal server error.',
+    message: error.message || 'Internal server error',
     error
   })
 }
 
 // If there's nothing left to do after all this (and there's no error),
 // return a 404 error.
-const pageNotFound = (req, res, next) => {
+const catchall = (req, res, next) => {
   res.status(NOT_FOUND).send({
     ok: false,
-    message: 'Page not found.'
+    message: 'The requested resource could not be found'
   })
 }
 
 module.exports = {
+  sequelizeError,
   unauthorized,
   forbidden,
+  conflict,
   badRequest,
   unprocessable,
   notFound,
   genericError,
-  pageNotFound
+  catchall
 }
