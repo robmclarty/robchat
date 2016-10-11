@@ -6,7 +6,7 @@ import {
 import {
   STATUS_PENDING,
   STATUS_SUCCESS,
-  STATUS_FAIL
+  STATUS_ERROR
 } from '../constants/FlashTypes'
 import config from '../../config/client'
 import { showFlash } from './'
@@ -29,7 +29,7 @@ export const updateUser = profile => (dispatch, callApi) => {
     .catch(err => {
       dispatch(updateUserFail(err))
       dispatch(showFlash({
-        status: STATUS_FAIL,
+        status: STATUS_ERROR,
         messages: [err]
       }))
     })

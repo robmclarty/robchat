@@ -11,7 +11,7 @@ import {
 import {
   STATUS_PENDING,
   STATUS_SUCCESS,
-  STATUS_FAIL
+  STATUS_ERROR
 } from '../constants/FlashTypes';
 import { showFlash } from './';
 
@@ -65,7 +65,7 @@ export const requestFriendship = (userId, username) => (dispatch, callApi) => {
     })))
     .then(() => dispatch(fetchRelationships(userId)))
     .catch(err => dispatch(showFlash({
-      status: STATUS_FAIL,
+      status: STATUS_ERROR,
       messages: [err]
     })))
 }
@@ -98,7 +98,7 @@ export const acceptFriendship = (userId, friendId) => (dispatch, callApi) => {
     })))
     .then(() => dispatch(fetchRelationships(userId)))
     .catch(err => dispatch(showFlash({
-      status: STATUS_FAIL,
+      status: STATUS_ERROR,
       messages: [err]
     })))
 }
@@ -117,7 +117,7 @@ export const declineFriendship = (userId, friendId) => (dispatch, callApi) => {
     })))
     .then(() => dispatch(fetchRelationships(userId)))
     .catch(err => dispatch(showFlash({
-      status: STATUS_FAIL,
+      status: STATUS_ERROR,
       messages: [err]
     })))
 }

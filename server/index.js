@@ -51,6 +51,7 @@ const {
   forbidden,
   badRequest,
   unprocessable,
+  notFound,
   genericError,
   pageNotFound
 } = require('./middleware/error_middleware')
@@ -60,6 +61,7 @@ app.use([
   forbidden,
   badRequest,
   unprocessable,
+  notFound,
   genericError,
   pageNotFound
 ])

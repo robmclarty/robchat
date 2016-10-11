@@ -4,7 +4,8 @@ const {
   createError,
   BAD_REQUEST,
   UNPROCESSABLE,
-  FORBIDDEN
+  FORBIDDEN,
+  NOT_FOUND
 } = require('../helpers/error_helper')
 const User = require('../models/user')
 const Friendship = require('../models/friendship')
@@ -61,27 +62,30 @@ const getFriend = (req, res, next) => {
 // TODO: move a lot of these validation checks into their own functions on the
 // user model
 const requestFriendship = (req, res, next) => {
-  if (!req.body.username) return next(createError({
+  const requesterId = req.params.id
+  const username = req.body.username
+
+  if (!username) return next(createError({
     status: BAD_REQUEST,
     message: 'No username provided from which to request friendship.'
   }))
 
   Promise.all([
-    User.findById(req.params.id),
-    User.findOne({ username: req.body.username }).select(User.FRIEND_ATTRIBUTES)
+    User.findById(requesterId),
+    User.findOne({ username }).select(User.FRIEND_ATTRIBUTES)
   ])
     .then(users => {
       const requester = users[0];
       const target = users[1];
 
       if (!target) throw createError({
-        status: BAD_REQUEST,
-        message: `No user found with username '${ target.username }'`
+        status: NOT_FOUND,
+        message: `No user found with username '${ username }'`
       })
 
       if (!requester) throw createError({
-        status: BAD_REQUEST,
-        message: `No user found with id ${ requester.id }`
+        status: NOT_FOUND,
+        message: `No user found with id ${ requesterId }`
       })
 
       // Requesting a friendship this way with no other error handling will not

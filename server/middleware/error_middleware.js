@@ -4,7 +4,7 @@ const {
   BAD_REQUEST,
   UNAUTHORIZED,
   FORBIDDEN,
-  PAGE_NOT_FOUND,
+  NOT_FOUND,
   UNPROCESSABLE,
   GENERIC_ERROR
 } = require('../helpers/error_helper')
@@ -45,6 +45,16 @@ const unprocessable = (error, req, res, next) => {
   })
 }
 
+// If there's nothing left to do after all this (and there's no error),
+// return a 404 error.
+const notFound = (err, req, res, next) => {
+  if (err.status !== NOT_FOUND) return next(err)
+
+  res.status(NOT_FOUND).send({
+    message: err.message || 'The requested resource could not be found'
+  })
+}
+
 // If there's still an error at this point, return a generic 500 error.
 const genericError = (error, req, res, next) => {
   res.status(GENERIC_ERROR).send({
@@ -56,7 +66,7 @@ const genericError = (error, req, res, next) => {
 // If there's nothing left to do after all this (and there's no error),
 // return a 404 error.
 const pageNotFound = (req, res, next) => {
-  res.status(PAGE_NOT_FOUND).send({
+  res.status(NOT_FOUND).send({
     message: 'Page not found.'
   })
 }
@@ -66,6 +76,7 @@ module.exports = {
   forbidden,
   badRequest,
   unprocessable,
+  notFound,
   genericError,
   pageNotFound
 }
