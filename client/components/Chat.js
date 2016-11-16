@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react'
+import moment from 'moment'
 
 const Chat = React.createClass({
   displayName: 'Chat',
@@ -62,6 +63,8 @@ const Chat = React.createClass({
   },
 
   render: function () {
+    let prevUsername = ''
+
     return (
       <div className="chat" ref="container">
         <ul id="users" ref="users" className="chat-users">
@@ -71,13 +74,23 @@ const Chat = React.createClass({
         </ul>
 
         <ul id="messages" ref="messages" className="chat-messages">
-          {this.props.messages.map((msg, index) => (
-            <li key={index}>
-              <b>{ msg.username }</b>
-              &nbsp;
-              { msg.body }
-            </li>
-          ))}
+          {this.props.messages.map((msg, index) => {
+            const isSameUser = prevUsername === msg.username
+
+            prevUsername = msg.username
+
+            return (
+              <li key={index}>
+                {!isSameUser &&
+                  <div className="message-meta">
+                    <b>{ msg.username }</b>
+                    <span>{ moment(msg.createdAt).calendar() }</span>
+                  </div>
+                }
+                <div className="message-body">{ msg.body }</div>
+              </li>
+            )
+          })}
         </ul>
 
         <form onSubmit={ this.onSubmit } className="chat-form">

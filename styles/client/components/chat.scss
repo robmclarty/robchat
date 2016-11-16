@@ -4,18 +4,21 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #f0f0f0;
+  background-color: #f9f9f9;
 
   .chat-users {
     position: absolute;
     top: 0;
     left: 0;
-    bottom: $chat_input_height;
+    bottom: 0;
     width: $chat_users_width;
     margin: 0;
-    padding: 20px;
+    padding: 2em;
     list-style: none;
     background-color: #aaa;
+    color: white;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 
   .chat-messages {
@@ -23,38 +26,70 @@
     top: 0;
     right: 0;
     left: $chat_users_width;
-    bottom: $chat_input_height;
+    bottom: 5em;
     margin: 0;
-    padding: 20px;
+    padding: 1.5em 2em 2em 2em;
     list-style: none;
     overflow-x: none;
     overflow-y: auto;
-    font-size: 1.2em;
-    background-color: #eee;
+    font-size: 1em;
 
-    li {
-      margin-bottom: .2em;
+    .message-meta {
+      margin-top: .5em;
+
+      b {
+      }
+      span {
+        margin-left: .5em;
+        font-size: .8em;
+        color: #aaa;
+      }
+    }
+
+    .message-body {
     }
   }
 
   .chat-form {
     position: absolute;
     bottom: 0;
-    left: 0;
+    left: $chat_users_width;
     right: 0;
-    height: $chat_input_height;
-    max-width: 100%;
+    height: 5em;
+    padding: 0 2em 2em 2em;
+    max-width: none;
+    width: auto;
 
     .chat-input {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      display: block;
+      position: relative;
+      // top: 0;
+      // left: 0;
+      // right: 0;
+      // bottom: 0;
       width: 100%;
+      height: 3em;
       padding: 10px 16px;
-      border: 0;
+      border: 2px solid #eee;
+      border-radius: 8px;
       outline: none;
+
+      &:focus {
+        border-color: darken(#eee, 10%);
+      }
     }
   }
+}
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #ccc;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: #ccc;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: #ccc;
+}
+:-moz-placeholder { /* Firefox 18- */
+  color: #ccc;
 }
