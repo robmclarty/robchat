@@ -25,7 +25,7 @@ const vendors = [
 
 // Vendors don't change during development, so save them to a separate file to
 // make rebuilding the app faster.
-gulp.task('build:vendors', function buildVendors() {
+gulp.task('build:vendors:client', function buildVendors() {
   const isProduction = process.env.NODE_ENV === 'production'
   const stream = browserify({
     debug: false,
@@ -44,7 +44,7 @@ gulp.task('build:vendors', function buildVendors() {
 // Concatenate all app JS files, parse JSX and ES6 using Babel, write
 // sourcemaps, use browserify for CommonJS and output to
 // 'public/js/application.js' as ES5.
-gulp.task('build:app', function () {
+gulp.task('build:scripts:client', function () {
   const isProduction = process.env.NODE_ENV === 'production'
   const browserifyOptions = {
     entries: ['./client'],

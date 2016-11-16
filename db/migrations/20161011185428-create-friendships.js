@@ -31,7 +31,7 @@ module.exports = {
         type: Sequelize.ENUM,
         allowNull: false,
         values: Object.keys(STATUS).map(key => STATUS[key]),
-        defaultValue: 'pending'
+        defaultValue: STATUS.PENDING
       },
       acceptedAt: {
         type: Sequelize.DATE,

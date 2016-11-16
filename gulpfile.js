@@ -17,11 +17,13 @@ const buildProduction = gulp.series(
   'clean',
   setProductionEnv,
   gulp.parallel(
-    'build:vendors',
-    'build:app',
-    'build:styles',
+    'build:vendors:client',
+    'build:scripts:client',
+    'build:styles:client',
+    'build:styles:public',
     'build:assets',
-    'build:html'
+    'build:html:client',
+    'build:html:public'
   )
   // 'rev:assets',
   // gulp.parallel('rev:js', 'rev:css'),
@@ -32,11 +34,13 @@ const buildProduction = gulp.series(
 const buildDevelopment = gulp.series(
   'clean',
   gulp.parallel(
-    'build:vendors',
-    'build:app',
-    'build:styles',
+    'build:vendors:client',
+    'build:scripts:client',
+    'build:styles:client',
+    'build:styles:public',
     'build:assets',
-    'build:html'
+    'build:html:client',
+    'build:html:public'
   )
 )
 
@@ -59,8 +63,9 @@ gulp.task(build)
 // Watch for changes in source file and restart/rebuild when there are any.
 function watch() {
   gulp.watch('assets/**/*', gulp.series('build:assets'))
-  gulp.watch('styles/**/*', gulp.series('build:styles'))
-  gulp.watch('client/**/*', gulp.series('build:app', 'build:html'))
+  gulp.watch('styles/**/*', gulp.series('build:styles:client', 'build:styles:public'))
+  gulp.watch('client/**/*', gulp.series('build:scripts:client', 'build:html:client'))
+  gulp.watch('public/**/*', gulp.series('build:html:public'))
   gulp.watch('server/**/*', gulp.series('server'))
 }
 watch.description = 'Watch variable folders for changes and rebuild if necessary.'

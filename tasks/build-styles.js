@@ -18,11 +18,10 @@ const autoprefixerBrowsers = [
 
 // Compile all SASS into CSS along with auto-prefixing and rev-replace static
 // assets. Minify and output to the public folder.
-gulp.task('build:styles', function () {
+gulp.task('build:styles:client', function () {
   const isProduction = process.env.NODE_ENV === 'production'
 
-  return gulp
-    .src('./styles/client/index.scss')
+  return gulp.src('./styles/client/index.scss')
     .pipe(gulpif(!isProduction, sourcemaps.init()))
       .pipe(concat('application.scss'))
       .pipe(sass({ style: 'expanded' }))
@@ -30,4 +29,17 @@ gulp.task('build:styles', function () {
       .pipe(gulpif(isProduction, minifycss()))
     .pipe(gulpif(!isProduction, sourcemaps.write()))
     .pipe(gulp.dest('./build/stylesheets'))
+})
+
+gulp.task('build:styles:public', function () {
+  const isProduction = process.env.NODE_ENV === 'production'
+
+  return gulp.src('./styles/public/index.scss')
+  .pipe(gulpif(!isProduction, sourcemaps.init()))
+    .pipe(concat('public.scss'))
+    .pipe(sass({ style: 'expanded' }))
+    .pipe(autoprefixer(autoprefixerBrowsers))
+    .pipe(gulpif(isProduction, minifycss()))
+  .pipe(gulpif(!isProduction, sourcemaps.write()))
+  .pipe(gulp.dest('./build/stylesheets'))
 })

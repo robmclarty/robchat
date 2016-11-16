@@ -1,0 +1,23 @@
+.homepage {
+  max-width: 800px;
+  margin: 3em auto;
+}
+
+.notify-form {
+  input[type="text"] {
+    width: 75%;
+    border-right: 0;
+  }
+  input[type="submit"] {
+    float: right;
+    width: 25%;
+    background-color: #fb9e40;
+    border: 1px solid #fb9e40;
+    color: white;
+
+    &:hover {
+      background-color: darken(#fb9e40, 5%);
+      border-color: darken(#fb9e40, 5%);
+    }
+  }
+}
