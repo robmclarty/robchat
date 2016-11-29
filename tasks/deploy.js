@@ -65,7 +65,10 @@ gulp.task('deploy:server', function () {
   return gulp
     .src([
       './server/**',
+      './.sequelizerc',
       './config/server.js',
+      './config/database.js',
+      './db/**',
       'package.json'
     ])
     .pipe(rsync(rsyncConf));
