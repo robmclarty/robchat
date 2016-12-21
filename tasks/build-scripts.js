@@ -11,6 +11,7 @@ const source = require('vinyl-source-stream')
 const buffer = require('vinyl-buffer')
 
 const vendors = [
+  'base64-js',
   'localforage',
   'moment',
   'node-fetch',
@@ -20,6 +21,7 @@ const vendors = [
   'react-router',
   'react-router-redux',
   'redux',
+  'redveil',
   'socket.io-client'
 ]
 

@@ -30,7 +30,7 @@ import {
 const tokensUrl = `${ config.authRoot }/tokens`
 
 const startup = (dispatch, state) => {
-  const userId = state.auth.tokenPayload.userId
+  const myId = state.auth.tokenPayload.userId
 
   return Promise.resolve()
     .then(() => dispatch(showFlash({
@@ -38,9 +38,9 @@ const startup = (dispatch, state) => {
       messages: ['Loading resources...']
     })))
     .then(() => {
-      dispatch(configureSockets())
-      dispatch(fetchProfile(userId))
-      dispatch(fetchUser(userId))
+      dispatch(configureSockets(myId))
+      dispatch(fetchProfile(myId))
+      dispatch(fetchUser(myId))
       //dispatch(fetchRelationships(userId))
     })
     .then(() => dispatch(hideFlash()))

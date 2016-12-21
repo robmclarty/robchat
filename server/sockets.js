@@ -60,7 +60,7 @@ const channelSockets = (io, channel) => {
   })
 }
 
-const attachSocketEvents = socket => {
+const attachSocketEvents = (io, socket) => {
   socket.on('send:message', msg => {
     socket.broadcast.to(msg.channel).emit('receive:message', {
       channel: msg.channel,
@@ -70,6 +70,16 @@ const attachSocketEvents = socket => {
 
   socket.on('create:private', socketId => {
 
+  })
+
+  socket.on('key:public:send', ({ channel, senderId, userId, socketId, publicKey }) => {
+    console.log('socketId: ', socketId, senderId, userId)
+    io.to(socketId).emit('key:public:receive', {
+      channel,
+      senderId,
+      userId,
+      publicKey
+    })
   })
 }
 
@@ -83,8 +93,6 @@ const init = io => {
       verifyToken(data.token)
         .catch(err => socket.emit('unauthorized', err, () => socket.close()))
         .then(token => {
-          console.log('socket authenticated')
-
           // Let the client know that authentication was successful.
           socket.emit('authenticated')
 
@@ -97,6 +105,8 @@ const init = io => {
           }
           socket.join(LOBBY)
 
+          console.log('socket authenticated', socket.userData.username)
+
           // Tell eveyone in the default channel that a new user joined.
           const sockets = channelSockets(io, LOBBY)
           io.to(LOBBY).emit('join:channel', {
@@ -108,13 +118,13 @@ const init = io => {
           //io.sockets.emit('user:connected', )
 
           // Setup event handlers for socket.
-          attachSocketEvents(socket)
+          attachSocketEvents(io, socket)
         })
         .catch(err => socket.emit('problem initializing socket connection', err, () => socket.close()))
     })
 
     socket.on('disconnect', () => {
-      console.log('user disconnected')
+      console.log('user disconnected', socket.userData.username)
 
       // Tell everyone that this user has disconnected.
       io.sockets.emit('user:disconnected', socket.id)
