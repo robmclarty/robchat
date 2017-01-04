@@ -1,4 +1,4 @@
-import redveil from 'redveil'
+import woobie from 'woobie'
 import base64 from 'base64-js'
 import {
   SEND_PUBLIC_KEY,
@@ -8,7 +8,7 @@ import {
 
 export const createUserKeys = (channel, myId, userId, socketId) => dispatch => {
   // Generate new key pair for each user in channel.
-  const keys = redveil.keyPair(redveil.generateRandomBytes({
+  const keys = woobie.keyPair(woobie.generateRandomBytes({
     lib: 'webcrypto',
     size: 32
   }))

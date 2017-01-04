@@ -1,4 +1,4 @@
-import redveil from 'redveil'
+import woobie from 'woobie'
 import base64 from 'base64-js'
 import {
   SEND_MESSAGE,
@@ -228,7 +228,7 @@ const chat = (state = initialState, action) => {
       const secretKeyBytes = base64.toByteArray(updatedUser.secretKey)
       const publicKeyBytes = base64.toByteArray(updatedUser.userPublicKey)
 
-      updatedUser.sharedKey = base64.fromByteArray(redveil.sharedSecret(secretKeyBytes, publicKeyBytes))
+      updatedUser.sharedKey = base64.fromByteArray(woobie.sharedSecret(secretKeyBytes, publicKeyBytes))
     }
 
     console.log('received public key, calculating shared key:', {

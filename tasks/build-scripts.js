@@ -21,7 +21,7 @@ const vendors = [
   'react-router',
   'react-router-redux',
   'redux',
-  'redveil',
+  'woobie',
   'socket.io-client'
 ]
 
