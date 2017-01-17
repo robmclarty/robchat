@@ -10,7 +10,8 @@ const Chat = React.createClass({
     username: PropTypes.string,
     messages: PropTypes.array,
     users: PropTypes.array,
-    channel: PropTypes.string
+    channel: PropTypes.string,
+    handleMessage: PropTypes.func
   },
 
   getDefaultProps: function () {
@@ -48,7 +49,7 @@ const Chat = React.createClass({
     e.preventDefault()
 
     // Send message to server.
-    this.props.sendMessage({
+    this.props.handleMessage({
       body: msg,
       channel: this.props.channel,
       userId: this.props.userId,

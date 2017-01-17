@@ -15,7 +15,7 @@ export const createUserKeys = (channel, myId, userId, socketId) => dispatch => {
   const publicKey = base64.fromByteArray(keys.publicKey)
   const secretKey = base64.fromByteArray(keys.secretKey)
 
-  console.log('ids: ', myId, userId)
+  //console.log('ids: ', myId, userId)
 
   // Store new public/secret keys generated for each user in channel.
   dispatch(updateChannelKeys(channel, myId, userId, publicKey, secretKey))

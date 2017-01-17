@@ -68,6 +68,10 @@ const attachSocketEvents = (io, socket) => {
     })
   })
 
+  socket.on('send:message:single', msg => {
+    io.to(msg.socketId).emit('receive:message:single', msg)
+  })
+
   socket.on('create:private', socketId => {
 
   })

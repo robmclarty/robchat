@@ -10,16 +10,34 @@ import {
 } from '../constants/ActionTypes'
 import config from '../../config/client'
 
-export const sendMessage = (channel, message) => ({
+export const sendMessage = ({
+  channel,
+  userId,
+  username,
+  body,
+  createdAt
+}) => ({
   type: SEND_MESSAGE,
   channel,
-  message
+  userId,
+  username,
+  body,
+  createdAt
 })
 
-export const receiveMessage = (channel, message) => ({
+export const receiveMessage = ({
+  channel,
+  userId,
+  username,
+  body,
+  createdAt
+}) => ({
   type: RECEIVE_MESSAGE,
   channel,
-  message
+  userId,
+  username,
+  body,
+  createdAt
 })
 
 export const refreshUsers = (channel, users) => ({

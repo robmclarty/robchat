@@ -113,7 +113,7 @@ const chat = (state = initialState, action) => {
         [action.channel]: {
           messages: [
             ...state.channels[action.channel].messages,
-            createMessage(action.message)
+            createMessage(action)
           ],
           users: state.channels[action.channel].users
         }
@@ -176,7 +176,9 @@ const chat = (state = initialState, action) => {
       channels: {
         ...state.channels,
         [action.channel]: {
-          messages: state.channels[action.channel].messages,
+          messages: state.channels[action.channel] ?
+            state.channels[action.channel].messages :
+            [],
           users: state.channels[actions.channel].users.filter(user => {
             return user.userId !== action.userId
           })
@@ -199,7 +201,6 @@ const chat = (state = initialState, action) => {
       channels: removeChannel(state.channels, action.channel)
     }
   case UPDATE_CHANNEL_KEYS:
-    console.log('action: ', action)
     return {
       ...state,
       channels: {
@@ -231,11 +232,11 @@ const chat = (state = initialState, action) => {
       updatedUser.sharedKey = base64.fromByteArray(woobie.sharedSecret(secretKeyBytes, publicKeyBytes))
     }
 
-    console.log('received public key, calculating shared key:', {
-      userId: action.userId,
-      userPublicKey: updatedUser.userPublicKey,
-      sharedKey: updatedUser.sharedKey
-    })
+    // console.log('received public key, calculating shared key:', {
+    //   userId: action.userId,
+    //   userPublicKey: updatedUser.userPublicKey,
+    //   sharedKey: updatedUser.sharedKey
+    // })
 
     return {
       ...state,

@@ -21,7 +21,13 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => ({
-  sendMessage: msg => dispatch(sendMessage(msg.channel, msg))
+  handleMessage: msg => dispatch(sendMessage({
+    channel: msg.channel,
+    userId: msg.userId,
+    username: msg.username,
+    body: msg.body,
+    createdAt: msg.createdAt
+  }))
 })
 
 export default connect(
