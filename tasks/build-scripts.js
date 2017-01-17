@@ -21,8 +21,8 @@ const vendors = [
   'react-router',
   'react-router-redux',
   'redux',
-  'woobie',
-  'socket.io-client'
+  'socket.io-client',
+  'woobie'
 ]
 
 // Vendors don't change during development, so save them to a separate file to
