@@ -29,10 +29,11 @@ const vendors = [
 // make rebuilding the app faster.
 gulp.task('build:vendors:client', function buildVendors() {
   const isProduction = process.env.NODE_ENV === 'production'
-  const stream = browserify({
-    debug: false,
-    require: vendors
-  })
+  const browserifyOpts = {
+    require: vendors,
+    debug: true
+  }
+  const stream = browserify(browserifyOpts)
 
   return stream.bundle()
     .pipe(source('vendors.js'))
@@ -48,18 +49,18 @@ gulp.task('build:vendors:client', function buildVendors() {
 // 'public/js/application.js' as ES5.
 gulp.task('build:scripts:client', function () {
   const isProduction = process.env.NODE_ENV === 'production'
-  const browserifyOptions = {
+  const browserifyOpts = {
     entries: ['./client'],
     debug: true,
     fullPaths: false
   }
-  const babelOptions = {
+  const babelOpts = {
     presets: ['es2015', 'react'],
     plugins: ['babel-plugin-transform-object-rest-spread']
   }
-  const stream = browserify(browserifyOptions)
+  const stream = browserify(browserifyOpts)
     .transform(envify())
-    .transform(babelify.configure(babelOptions))
+    .transform(babelify.configure(babelOpts))
 
   vendors.forEach(vendor => stream.external(vendor))
 

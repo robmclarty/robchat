@@ -41,7 +41,6 @@ export const socketMiddleware = store => next => action => {
       const messagePromises = state.chat.channels[action.channel].users.map(user => {
         if (user.userId !== state.user.id) { // don't send message to yourself
           return woobie.encrypt({
-            lib: woobie.CRYPTO_LIBS.WEBCRYPTO,
             data: action.body,
             key: user.sharedKey,
             compressed: true,
@@ -111,7 +110,6 @@ const initChatInterface = (dispatch, myId, getState) => {
     console.log('mac: ', mac)
 
     woobie.decrypt({
-      lib: woobie.CRYPTO_LIBS.WEBCRYPTO,
       data,
       key: senderSession.sharedKey,
       iv,

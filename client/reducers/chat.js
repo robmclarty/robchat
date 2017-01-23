@@ -179,7 +179,7 @@ const chat = (state = initialState, action) => {
           messages: state.channels[action.channel] ?
             state.channels[action.channel].messages :
             [],
-          users: state.channels[actions.channel].users.filter(user => {
+          users: state.channels[action.channel].users.filter(user => {
             return user.userId !== action.userId
           })
         }
