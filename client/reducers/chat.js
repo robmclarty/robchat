@@ -12,7 +12,9 @@ import {
   LOGOUT_SUCCESS,
   SEND_PUBLIC_KEY,
   RECEIVE_PUBLIC_KEY,
-  UPDATE_CHANNEL_KEYS
+  UPDATE_CHANNEL_KEYS,
+  SAVE_DOCUMENT_TITLE,
+  RESET_UNREAD_MESSAGES
 } from '../constants/ActionTypes'
 
 // channels: {
@@ -99,15 +101,31 @@ const updateChannelUserKeys = ({
 const initialState = {
   channels: {},
   activeChannel: '',
-  error: ''
+  error: '',
+  unread: 0,
+  title: 'robchat'
 }
 
 const chat = (state = initialState, action) => {
   switch (action.type) {
   case SEND_MESSAGE:
+    return {
+      ...state,
+      channels: {
+        ...state.channels,
+        [action.channel]: {
+          messages: [
+            ...state.channels[action.channel].messages,
+            createMessage(action)
+          ],
+          users: state.channels[action.channel].users
+        }
+      }
+    }
   case RECEIVE_MESSAGE:
     return {
       ...state,
+      unread: state.unread + 1,
       channels: {
         ...state.channels,
         [action.channel]: {
@@ -249,6 +267,17 @@ const chat = (state = initialState, action) => {
           })
         }
       }
+    }
+  case SAVE_DOCUMENT_TITLE:
+    return {
+      ...state,
+      title: action.title
+    }
+  case RESET_UNREAD_MESSAGES:
+    console.log('resetting unread messages')
+    return {
+      ...state,
+      unread: 0
     }
   case LOGOUT_SUCCESS:
     return initialState

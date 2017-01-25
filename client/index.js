@@ -3,7 +3,7 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { Router, Route, Redirect, IndexRoute, browserHistory } from 'react-router'
 import { syncHistoryWithStore, push } from 'react-router-redux'
-import { autoLogin, resetFlash } from './actions'
+import { autoLogin, resetFlash, saveDocumentTitle, resetUnreadMessages } from './actions'
 import { configureStore } from './store'
 
 // Containers
@@ -25,6 +25,14 @@ const history = syncHistoryWithStore(browserHistory, store)
 
 // Try to login from tokens in localstorage.
 store.dispatch(autoLogin())
+
+// Store original document title in state.
+store.dispatch(saveDocumentTitle(document.title))
+
+// Listen for focus event and when the document receives focus, reset all
+// unread messages.
+// TODO: package this up in its own module.
+window.addEventListener('focus', e => store.dispatch(resetUnreadMessages()))
 
 const resetFlashOnEnter = () => store.dispatch(resetFlash())
 

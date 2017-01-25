@@ -11,6 +11,8 @@ const Chat = React.createClass({
     messages: PropTypes.array,
     users: PropTypes.array,
     channel: PropTypes.string,
+    title: PropTypes.string,
+    unread: PropTypes.number,
     handleMessage: PropTypes.func
   },
 
@@ -21,7 +23,9 @@ const Chat = React.createClass({
       username: '',
       messages: [],
       users: [],
-      channel: ''
+      channel: '',
+      title: 'robchat',
+      unread: 0
     }
   },
 
@@ -65,6 +69,16 @@ const Chat = React.createClass({
 
   render: function () {
     let prevUsername = ''
+
+    // If there are more than zero unread messages, and the document is not
+    // currently focused, then display the number of unread messages in the
+    // document's title.
+    // TODO: package this up in its own module.
+    if (this.props.unread > 0 && !document.hasFocus()) {
+      document.title = `(${ this.props.unread }) ${ this.props.title }`
+    } else {
+      document.title = this.props.title
+    }
 
     return (
       <div className="chat" ref="container">

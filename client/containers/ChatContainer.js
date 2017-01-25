@@ -16,7 +16,9 @@ const mapStateToProps = state => {
     isAuthenticated: state.auth.isAuthenticated,
     userId: Number(state.auth.userId),
     username: state.auth.username,
-    channel
+    channel,
+    title: state.chat.title,
+    unread: state.chat.unread
   }
 }
 

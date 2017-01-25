@@ -6,7 +6,9 @@ import {
   REMOVE_USER,
   CHANGE_CHANNEL,
   JOIN_CHANNEL,
-  LEAVE_CHANNEL
+  LEAVE_CHANNEL,
+  SAVE_DOCUMENT_TITLE,
+  RESET_UNREAD_MESSAGES
 } from '../constants/ActionTypes'
 import config from '../../config/client'
 
@@ -88,4 +90,13 @@ const createPrivateChatSuccess = () => ({
 })
 
 const createPrivateChatFail = err => ({
+})
+
+export const saveDocumentTitle = title => ({
+  type: SAVE_DOCUMENT_TITLE,
+  title
+})
+
+export const resetUnreadMessages = () => ({
+  type: RESET_UNREAD_MESSAGES
 })
